@@ -1,41 +1,17 @@
-# C4 Diagrams - Flight Booking System
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-## Level 1: System Context
+Person(customer, "Customer", "Searches for flights, books seats, and manages bookings.")
+Person(admin, "Admin", "Manages flight schedules, airports, and aircraft information.")
 
-```mermaid
-flowchart TB
-    C([Customer])
-    A([Admin])
-    S[Flight Booking System]
-    P[Simulated Payment Service]
-    N[Simulated Notification Service]
+System(flightSystem, "Flight Booking System", "Allows customers to search and book flights, and admins to manage flight schedules.")
 
-    C -->|Searches, books, pays, cancels| S
-    A -->|Manages flights, airports, aircraft| S
-    S -->|Sends payment request| P
-    S -->|Sends booking confirmation| N
-```
+System_Ext(paymentService, "Simulated Payment Service", "Processes card payments and transaction verification.")
+System_Ext(notificationService, "Simulated Notification Service", "Sends booking confirmations and e-tickets via email/SMS.")
 
-## Level 2: Containers
+Rel(customer, flightSystem, "Searches flights, books seats, makes payments", "HTTPS")
+Rel(admin, flightSystem, "Manages schedules, airports, and aircraft", "HTTPS")
 
-```mermaid
-flowchart TB
-    C([Customer])
-    A([Admin])
-
-    subgraph SYS[Flight Booking System]
-        W[Web Application<br/>user interface]
-        B[Backend API<br/>booking and business logic]
-        D[(Database<br/>users, flights, seats, bookings)]
-    end
-
-    P[Simulated Payment Service]
-    N[Simulated Notification Service]
-
-    C -->|Uses browser| W
-    A -->|Uses browser| W
-    W -->|Calls API| B
-    B -->|Reads and writes| D
-    B -->|Payment request| P
-    B -->|Confirmation| N
-```
+Rel(flightSystem, paymentService, "Sends payment requests to", "HTTPS/JSON")
+Rel(flightSystem, notificationService, "Sends notifications via", "HTTPS/JSON")
+@enduml
