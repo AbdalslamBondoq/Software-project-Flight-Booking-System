@@ -2,9 +2,7 @@
 
 ## 1. Overview
 
-This document describes the activity flow for the Flight Booking System, focusing on the customer flight booking process.
-
-The diagram covers customer authentication, flight search, seat selection, temporary seat reservation, simulated payment, booking confirmation, and ticket generation.
+This document describes the customer flight booking process, including login, flight search, seat selection, the 10-minute seat hold, simulated payment, booking confirmation, and e-ticket generation.
 
 ## 2. Activity Diagram
 
@@ -22,7 +20,7 @@ flowchart TD
     G --> H[Display Available Flights]
     H --> I{Suitable Flight Found?}
 
-    I -- No --> J[Display No Flights Found]
+    I -- No --> J[Return to Flight Search]
     J --> F
 
     I -- Yes --> K[Select Flight]
@@ -36,7 +34,6 @@ flowchart TD
     N -- Yes --> P[Create Pending Booking]
     P --> Q[Hold Seat for 10 Minutes]
     Q --> R[Proceed to Simulated Payment]
-
     R --> S{Payment Completed Within 10 Minutes?}
 
     S -- No --> T[Expire Pending Booking]
@@ -47,19 +44,19 @@ flowchart TD
     S -- Yes --> W{Payment Successful?}
 
     W -- No --> X[Cancel Pending Booking]
-    X --> U
+    X --> AF[Release Held Seat]
+    AF --> AG[Display Payment Failed - Booking Cancelled]
+    AG --> Z
 
     W -- Yes --> Y{Seat Hold Still Valid?}
 
     Y -- No --> T
-
     Y -- Yes --> AA[Confirm Booking]
     AA --> AB[Mark Seat as Booked]
     AB --> AC[Generate E-Ticket]
-    AC --> AD[Send Simulated Confirmation]
-    AD --> AE[Display Booking Confirmation]
+    AC --> AD[Record Simulated Booking Confirmation]
+    AD --> AE[Display Booking Confirmation and E-Ticket]
     AE --> Z
-
 ```
 
 ## 3. Main Activity Descriptions
@@ -67,31 +64,32 @@ flowchart TD
 | Activity | Description |
 |---|---|
 | Customer Login | The customer enters their email and password to access the system. |
-| Search Flights | The customer searches using origin, destination, and travel date. |
-| Select Flight | The customer selects a suitable available flight. |
-| Select Seat | The customer chooses an available seat. |
-| Temporary Seat Hold | The system holds the selected seat for 10 minutes. |
-| Simulated Payment | The customer completes a simulated payment transaction. |
-| Booking Confirmation | The system confirms the booking only after successful payment and valid seat hold. |
-| Ticket Generation | The system generates an electronic ticket after successful confirmation. |
-| Seat Release | The system releases the seat if payment fails or the temporary hold expires. |
+| Search Flights | The customer searches by origin, destination, and travel date. |
+| Select Flight | The customer selects a suitable flight or searches again. |
+| Select Seat | The customer chooses a seat, and the system checks its availability. |
+| Temporary Seat Hold | The system creates a pending booking and holds the selected seat for 10 minutes. |
+| Simulated Payment | The customer submits payment while the seat hold is active. |
+| Payment Failure | The system cancels the pending booking, releases the seat, and displays a payment failure message. |
+| Hold Expiration | When the hold expires before confirmation, the system marks the pending booking as expired, releases the seat, and displays an expiration message. |
+| Booking Confirmation | After successful payment, the system verifies that the hold is still valid, confirms the booking, and marks the seat as booked. |
+| Ticket and Notification | The system generates an e-ticket, records a simulated booking confirmation, and displays the confirmation and ticket to the customer. |
 
 ## 4. Business Rules
 
 1. Customers must log in before booking a flight.
-2. Customers can only select available seats.
-3. A selected seat is temporarily held for 10 minutes.
-4. A pending booking expires if payment is not completed within 10 minutes.
-5. A failed payment cancels the pending booking and releases the seat.
-6. The system must validate the seat hold before confirming the booking.
-7. An electronic ticket is generated only after successful payment.
-8. Payment and booking confirmation notifications are simulated.
+2. Only an available seat can be reserved. The availability check, pending booking creation, and seat hold must occur in one database transaction to prevent double booking.
+3. The seat hold lasts 10 minutes from the creation of the pending booking.
+4. When the hold expires, the system marks the pending booking as `EXPIRED` and releases the seat.
+5. If payment fails while the hold is active, the system marks the pending booking as `CANCELLED`, releases the seat, and displays a payment failure message.
+6. The system confirms a booking only if payment succeeds and the booking still owns an active hold on the seat.
+7. The system generates an e-ticket only after confirming the booking.
+8. Payment processing and booking notifications are simulated.
 
 ## 5. Related Documents
 
-- `requirements.md`
-- `architecture.md`
-- `sequence_booking.md`
-- `state_booking.md`
-- `class_diagram.md`
-- `erd.md`
+- [Requirements](../docs/requirements.md)
+- [Architecture](../docs/architecture.md)
+- [Booking Sequence Diagram](sequence_booking.md)
+- [Booking State Diagram](state_booking.md)
+- [Class Diagram](class_diagram.md)
+- [Entity Relationship Diagram](erd.md)
