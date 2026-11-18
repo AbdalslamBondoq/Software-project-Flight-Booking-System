@@ -42,6 +42,8 @@ When a customer requests a booking, the backend checks that the seat belongs to 
 | Payment fails while the hold is active | Mark the pending booking as `CANCELLED` and release its seat. |
 | The hold expires before confirmation | Mark the pending booking as `EXPIRED` and release its seat. A late payment result cannot confirm the expired booking. |
 
+FR-07 covers seat selection and booking creation. FR-08 covers the 10-minute hold that prevents double booking. See [Requirements](requirements.md).
+
 ### 3. Simulated payments and notifications
 
 The backend calls the Payment Service and Notification Service as internal modules. Payment processing, refunds, and confirmation messages are simulated within the application.
@@ -57,6 +59,8 @@ The Backend API checks the user's role before allowing a protected operation.
 | System Manager | Creates and configures airline administrator accounts. |
 
 Public registration creates customer accounts only.
+
+FR-02 assigns administrator account creation to the System Manager. NFR-04 restricts flight, airport, and aircraft management to authorized airline administrators. See [Requirements](requirements.md).
 
 ### 5. Cancellations and refunds
 
