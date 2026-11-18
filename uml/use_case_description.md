@@ -135,12 +135,14 @@ The descriptions are based on the Use Case Diagram and the functional requiremen
 | Use Case ID | UC-09 |
 | Use Case Name | Complete Simulated Payment |
 | Primary Actor | Customer |
-| Description | Allows the customer to complete a simulated payment for a pending booking. |
-| Preconditions | The customer has a pending booking and the seat hold is still active. |
-| Trigger | The customer selects the payment option. |
-| Main Flow | 1. The customer proceeds to payment. 2. The system displays the booking amount. 3. The customer confirms the simulated payment. 4. The system processes the simulated payment result. 5. The system verifies that the seat hold is still active. 6. If payment succeeds and the hold is active, the system confirms the booking. |
-| Alternative Flow | If payment fails, the system cancels the pending booking and releases the seat. If the hold has expired, the system does not confirm the booking. |
-| Postconditions | The booking is confirmed only when payment succeeds and the seat hold remains valid. |
+| Description | The customer pays for a pending booking through simulated payment processing. |
+| Preconditions | The customer is logged in, owns the pending booking, and has an active seat hold for that booking. |
+| Trigger | The customer confirms the simulated payment for the displayed booking amount. |
+| Main Flow | 1. The system verifies that the booking is pending and still holds the selected seat. 2. The system processes the simulated payment. 3. When payment succeeds, the system checks the hold again. 4. If the hold is still active and belongs to this booking, the system confirms the booking and marks the seat as booked in one transaction. 5. The system generates the e-ticket (UC-10) and records the simulated booking confirmation (UC-11). |
+| Alternative Flow — Payment Failure | If payment fails while the hold is active, the system marks the booking as CANCELLED, releases its seat, and displays a payment failure message. |
+| Alternative Flow — Hold Expiration | If the hold expires before or during payment processing, the booking becomes EXPIRED and its seat hold is released. The system displays an expiration message and does not issue an e-ticket. |
+| Postconditions | On success, the booking is CONFIRMED and the seat is BOOKED. On payment failure, the booking is CANCELLED. On timeout, the booking is EXPIRED. |
+| Related Use Cases | In the use case diagram, **Confirm Booking** extends **Complete Simulated Payment** when payment succeeds and the hold is still active. **Confirm Booking** includes **Generate E-ticket** (UC-10) and **Record Booking Confirmation** (UC-11). |
 
 ### UC-10: Generate E-ticket
 
