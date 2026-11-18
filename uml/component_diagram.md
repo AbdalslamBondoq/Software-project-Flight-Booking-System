@@ -2,233 +2,153 @@
 
 ## 1. Overview
 
-This diagram illustrates the main software components of the Flight Booking System and how they interact.
+The Flight Booking System has three layers: a web application, a FastAPI backend, and a SQLite database. Customers book flights, airline administrators manage flight data, and the System Manager creates and configures administrator accounts.
 
-The system follows a layered architecture consisting of three main layers:
-
-- **Web Application:** Provides interfaces for customers, airline administrators, and the system manager.
-- **Backend API:** Handles authentication, flight management, booking operations, seat availability, payments, cancellations, and notifications.
-- **Database:** Stores users, flights, airports, aircraft, seats, bookings, payments, tickets, and notifications.
-
-The system also includes simulated external payment and notification services.
+The backend simulates payments and records booking confirmations internally. The web application accesses the database through the backend API.
 
 ## 2. Component Diagram
 
 ```mermaid
-flowchart LR
-
-    %% ACTORS
+flowchart TB
     subgraph Actors["System Actors"]
-        direction TB
         Customer["Customer"]
         Admin["Airline Administrator"]
         Manager["System Manager"]
     end
 
-    %% WEB APPLICATION
-    subgraph Web["Web Application"]
-        direction TB
-        AuthUI["Authentication Interface"]
-        SearchUI["Flight Search Interface"]
-        SeatUI["Booking and Seat Selection Interface"]
-        BookingUI["My Bookings and Cancellation Interface"]
-        PaymentUI["Payment Interface"]
-        AdminUI["Administration Interface"]
-        AccountUI["Admin Account Management Interface"]
+    subgraph Web["Web Application - HTML, CSS, JavaScript"]
+        CustomerUI["Customer Interface"]
+        AdminUI["Flight Administration Interface"]
+        ManagerUI["Administrator Account Setup Interface"]
     end
 
-    %% BACKEND API
-    subgraph API["Backend API - FastAPI"]
-        direction TB
+    subgraph Backend["Backend API - Python / FastAPI"]
+        API["API Routes"]
 
         subgraph Identity["Identity and Access"]
-            direction LR
-            Auth["Authentication Component"]
+            Auth["Authentication"]
             Access["Role-Based Access Control"]
-            AdminAccount["Admin Account Management Component"]
+            Accounts["Admin Account Management"]
         end
 
-        subgraph FlightServices["Flight Services"]
-            direction LR
-            Search["Flight Search Component"]
-            Flight["Flight Management Component"]
+        subgraph Flights["Flight Services"]
+            Search["Flight Search"]
+            FlightAdmin["Flight Management"]
         end
 
-        subgraph BookingServices["Booking Services"]
-            direction LR
-            Seat["Seat Availability and Holding Component"]
-            Booking["Booking Management Component"]
-            Cancellation["Cancellation and Refund Component"]
+        subgraph Reservations["Booking Services"]
+            Booking["Booking Management"]
+            Seats["Seat Availability and Holding"]
+            Cancellation["Cancellation and Refund Calculation"]
         end
 
-        subgraph PaymentServices["Payment and Notifications"]
-            direction LR
-            Payment["Payment Processing Component"]
-            Ticket["E-ticket Generation Component"]
-            Notification["Notification Component"]
+        subgraph Payments["Payment, Ticketing and Notifications"]
+            Payment["Simulated Payment Processing"]
+            Ticket["E-ticket Generation"]
+            Notification["Simulated Booking Confirmation"]
         end
     end
 
-    %% DATABASE
-    subgraph DB["SQLite Database"]
-        direction TB
-        UsersDB[("Users")]
-        FlightsDB[("Flights, Airports and Aircraft")]
-        SeatsDB[("Seats")]
-        BookingsDB[("Bookings and Seat Holds")]
-        PaymentsDB[("Payments, Refunds and Tickets")]
-        NotificationsDB[("Notifications")]
-    end
+    DB[("SQLite Database")]
 
-    %% EXTERNAL SERVICES
-    subgraph External["Simulated External Services"]
-        direction TB
-        SimPayment["Simulated Payment Service"]
-        SimNotification["Simulated Notification Service"]
-    end
-
-    %% ACTOR INTERACTIONS
-    Customer --> AuthUI
-    Customer --> SearchUI
-    Customer --> SeatUI
-    Customer --> BookingUI
-    Customer --> PaymentUI
-
-    Admin --> AuthUI
+    Customer --> CustomerUI
     Admin --> AdminUI
-    Manager --> AccountUI
+    Manager --> ManagerUI
 
-    %% WEB TO BACKEND
-    AuthUI --> Auth
-    SearchUI --> Search
-    SeatUI --> Seat
-    SeatUI --> Booking
-    BookingUI --> Booking
-    BookingUI --> Cancellation
-    PaymentUI --> Payment
-    AdminUI --> Access
-    AdminUI --> Flight
-    AccountUI --> AdminAccount
+    CustomerUI -->|HTTPS / JSON| API
+    AdminUI -->|HTTPS / JSON| API
+    ManagerUI -->|HTTPS / JSON| API
 
-    %% IDENTITY AND ACCESS
-    Auth --> UsersDB
-    Access --> UsersDB
-    AdminAccount --> UsersDB
-    Access --> Flight
-    Access --> AdminAccount
+    API -->|Register, log in or log out| Auth
+    API -->|Check permissions for protected operations| Access
+    Access -->|System Manager only| Accounts
+    Access -->|Airline Administrator only| FlightAdmin
+    Access -->|Customer booking operations| Booking
+    API -->|Search and filter flights| Search
+    API -->|View flight seats| Seats
 
-    %% FLIGHT SERVICES
-    Flight --> FlightsDB
-    Search --> FlightsDB
-    Search --> SeatsDB
+    Booking -->|Acquire, confirm or release a seat hold| Seats
+    Booking -->|Process payment| Payment
+    Booking -->|Issue ticket after confirmation| Ticket
+    Booking -->|Record confirmation| Notification
+    Booking -->|Cancel a confirmed booking| Cancellation
+    Cancellation -->|Process an eligible refund| Payment
+    Cancellation -->|Release the booked seat| Seats
 
-    %% BOOKING SERVICES
-    Seat --> SeatsDB
-    Seat --> BookingsDB
-    Booking --> BookingsDB
-    Booking --> SeatsDB
-    Booking --> Notification
-
-    %% PAYMENT AND TICKETS
-    Payment --> SimPayment
-    Payment --> PaymentsDB
-    Payment --> BookingsDB
-    Payment --> Ticket
-    Ticket --> PaymentsDB
-    Ticket --> Notification
-
-    %% CANCELLATION AND REFUNDS
-    Cancellation --> BookingsDB
-    Cancellation --> PaymentsDB
-    Cancellation --> SimPayment
-
-    %% NOTIFICATIONS
-    Notification --> SimNotification
-    Notification --> NotificationsDB
-
-    %% SEAT HOLD EXPIRATION
-    HoldRule["10-minute seat hold<br/>Automatic expiration and release"]
-    HoldRule -.-> Seat
-
-    %% STYLING
-    classDef actor fill:#08427b,stroke:#052e56,color:#fff
-    classDef ui fill:#438dd5,stroke:#2e6295,color:#fff
-    classDef backend fill:#1168bd,stroke:#0b4884,color:#fff
-    classDef database fill:#287a45,stroke:#17552d,color:#fff
-    classDef external fill:#999999,stroke:#6b6b6b,color:#fff
-    classDef rule fill:#8b6914,stroke:#66500e,color:#fff
-
-    class Customer,Admin,Manager actor
-    class AuthUI,SearchUI,SeatUI,BookingUI,PaymentUI,AdminUI,AccountUI ui
-    class Auth,Access,AdminAccount,Search,Flight,Seat,Booking,Cancellation,Payment,Ticket,Notification backend
-    class UsersDB,FlightsDB,SeatsDB,BookingsDB,PaymentsDB,NotificationsDB database
-    class SimPayment,SimNotification external
-    class HoldRule rule
+    Auth --> DB
+    Accounts --> DB
+    FlightAdmin --> DB
+    Search --> DB
+    Booking --> DB
+    Seats --> DB
+    Cancellation --> DB
+    Payment --> DB
+    Ticket --> DB
+    Notification --> DB
 ```
 
-## 3. Main Components
+## 3. Main Component Responsibilities
 
 | Component | Responsibility |
 |---|---|
-| Authentication | Handles customer registration, login, logout, and administrator authentication. |
-| Admin Account Management | Allows the system manager to create and configure administrator accounts in advance. |
-| Role-Based Access Control | Restricts administrative functions to authorized administrators. |
-| Flight Management | Adds, edits, and deletes flights, airports, and aircraft. |
-| Flight Search | Searches and filters available flights. |
-| Seat Management | Displays seat availability and manages temporary seat holds. |
-| Booking Management | Creates and manages customer bookings. |
-| Payment Processing | Processes simulated payments. |
-| E-ticket Generation | Generates e-tickets after successful payment. |
-| Cancellation and Refund | Cancels bookings and calculates refunds according to the cancellation policy. |
-| Notification | Generates simulated booking confirmation notifications. |
+| API Routes | Receive requests from the web application and route them to the appropriate backend components. |
+| Authentication | Registers customers, hashes passwords, validates login credentials, and ends user sessions on logout. |
+| Role-Based Access Control | Checks the authenticated user's role before allowing a protected operation. |
+| Admin Account Management | Allows the System Manager to create and configure administrator accounts. |
+| Flight Management | Allows airline administrators to manage flights, schedules, airports, and aircraft. |
+| Flight Search | Finds flights by origin, destination, and date. Supports filtering and sorting results by price and time. |
+| Seat Availability and Holding | Displays seat availability, manages 10-minute holds, and releases seats when a hold expires or a booking is cancelled. |
+| Booking Management | Creates pending bookings, retrieves the customer's own bookings, and coordinates payment, confirmation, ticket issuance, and cancellation. |
+| Simulated Payment Processing | Produces a simulated payment result, records the transaction, and processes eligible simulated refunds. |
+| E-ticket Generation | Generates a unique e-ticket for a confirmed booking and stores it in the database. |
+| Simulated Booking Confirmation | Records a confirmation message after the booking is confirmed. |
+| Cancellation and Refund Calculation | Checks booking ownership and cancellation eligibility, calculates the refund, and coordinates seat release. |
 
-## 4. Database Components
+## 4. Data Storage
 
-| Database Component | Stored Information |
+| Data | Stored information |
 |---|---|
-| Users | Customer and administrator account information. |
-| Flights, Airports and Aircraft | Flight schedules, airport information, and aircraft information. |
-| Seats | Seat numbers, availability, and reservation status. |
-| Bookings and Seat Holds | Customer bookings and temporary seat reservations. |
-| Payments, Refunds and Tickets | Payment records, refund information, and generated e-tickets. |
-| Notifications | Simulated booking confirmation notifications. |
+| Users | Customer, airline administrator, and System Manager accounts, including roles and password hashes. |
+| Airports, aircraft, and flights | Airport codes, aircraft capacity, flight schedules, routes, and prices. |
+| Seats | Seat number, associated flight, availability status, and hold expiration time. |
+| Bookings | Booking owner, flight, seat, booking status, amount, and applicable refund. |
+| Payments and tickets | Simulated payment results and electronic tickets linked to bookings. |
+| Booking confirmations | Simulated confirmation records associated with confirmed bookings. |
 
 ## 5. Important Design Rules
 
-- The Web Application communicates with the Backend API.
-- The Backend API handles business logic and database operations.
-- The Web Application must not access the database directly.
-- Passwords must be stored using secure hashing, not as plain text.
-- Administrator accounts are created and configured in advance by the System Manager.
-- Public administrator registration is not allowed.
-- Only authorized administrators can access administrative management functions.
-- Seat holds expire automatically after 10 minutes if payment is not completed.
-- The same seat on the same flight cannot be booked by two different customers.
-- E-tickets are generated only after successful payment.
-- A booking cancelled 14 or more days before departure receives a 50% refund.
-- A booking cancelled less than 14 days before departure receives no refund.
-- Payment and notification services are simulated and do not use real external services.
+1. Customers register through the public registration interface. Only the System Manager can create administrator accounts.
+2. Only authorized airline administrators can manage flights, airports, and aircraft. Customers can view and cancel only their own bookings.
+3. Checking seat availability, acquiring the seat hold, and creating the pending booking happen in one database transaction. Only one active booking can own a seat on a given flight.
+4. A seat hold lasts 10 minutes. When the hold expires, the system marks the pending booking as `EXPIRED` and releases its seat.
+5. If payment fails while the hold is active, the system marks the pending booking as `CANCELLED` and releases its seat.
+6. Before confirming a booking, the backend verifies that payment succeeded and that the booking still owns an active hold. It then marks the booking as `CONFIRMED` and the seat as `BOOKED`.
+7. After confirmation, the system issues an e-ticket and records a simulated booking confirmation.
+8. A customer can cancel a confirmed booking before departure. Cancellation at least 14 days before departure gives a 50% refund. Cancellation less than 14 days before departure gives no refund.
+9. Payment processing, refunds, and booking notifications are simulated inside the backend.
 
 ## 6. Technology Stack
 
-| Layer | Technology |
+| Layer or activity | Technology |
 |---|---|
 | Frontend | HTML, CSS, JavaScript |
 | Backend | Python, FastAPI |
 | Database | SQLite |
 | Testing | pytest |
-| Development Workflow | Agentic AI (Claude Code) |
-| Version Control | Git and GitHub |
+| Agentic AI development | Claude Code |
+| Version control | Git and GitHub |
 
 ## 7. Related Documentation
 
-- Project description: `docs/project_description.md`
-- System requirements: `docs/requirements.md`
-- System architecture: `docs/architecture.md`
-- C4 Context Diagram: `uml/c4_context.md`
-- C4 Container Diagram: `uml/c4_container.md`
-- Use Case Diagram: `uml/use_case_diagram.md`
-- Class Diagram: `uml/class_diagram.md`
-- Sequence Diagram: `uml/sequence_booking.md`
-- State Diagram: `uml/state_booking.md`
-- Entity Relationship Diagram: `uml/erd.md`
+- [Project Description](../docs/project_description.md)
+- [Requirements](../docs/requirements.md)
+- [Architecture](../docs/architecture.md)
+- [C4 System Context Diagram](c4_context.md)
+- [C4 Container Diagram](c4_container.md)
+- [Use Case Diagram](use_case_diagram.md)
+- [Booking Sequence Diagram](sequence_booking.md)
+- [Booking State Diagram](state_booking.md)
+- [Booking Activity Diagram](activity_booking.md)
+- [Class Diagram](class_diagram.md)
+- [Entity Relationship Diagram](erd.md)
+- [Deployment Diagram](deployment_diagram.md)
