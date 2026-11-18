@@ -12,14 +12,14 @@ The system scope and users are described in [`project_description.md`](project_d
 | FR-04 | Search Flights | The customer can search for flights by origin, destination, and date. | Customer |
 | FR-05 | Filter Results | The customer can filter and sort search results by price and time. | Customer |
 | FR-06 | View Seats | The customer can view available seats for a flight. | Customer |
-| FR-07 | Book Seat | The customer can select an available seat and create a booking. | Customer |
-| FR-08 | Prevent Double Booking | The system prevents two customers from booking the same seat by holding a selected seat for 10 minutes until payment is completed or the hold expires. | System |
-| FR-09 | Pay | The customer can pay for a booking using simulated payment processing. | Customer |
-| FR-10 | E-ticket | The system issues an e-ticket after successful payment. | System |
-| FR-11 | View Bookings | The customer can view their bookings. | Customer |
-| FR-12 | Cancel Booking | The customer can cancel a booking according to the cancellation policy. | Customer |
-| FR-13 | Refund | The system calculates a refund on cancellation: 50% if cancelled 14 or more days before departure, and no refund otherwise. | System |
-| FR-14 | Confirmation | The system generates a booking confirmation notification (simulated). | System |
+| FR-07 | Book Seat | The customer can select an available seat and create a booking. | Customer || FR-07 | Book Seat | A logged-in customer can select an available seat on a flight and create a PENDING booking. | Customer |
+| FR-08 | Prevent Double Booking | When a pending booking is created, the system holds the seat for 10 minutes. Only one booking can hold or reserve the same seat on the same flight at a time. If the hold expires before confirmation, the system marks the pending booking as EXPIRED and releases the seat. | System |
+| FR-09 | Pay | The customer can make a simulated payment for a pending booking. If payment succeeds while the seat hold is active, the system marks the booking as CONFIRMED and the seat as BOOKED. If payment fails while the hold is active, the system marks the booking as CANCELLED and releases the seat. | Customer |
+| FR-10 | E-ticket | The system issues an e-ticket only after successful payment and booking confirmation. | System |
+| FR-11 | View Bookings | The customer can view their own bookings and the current status of each booking. | Customer |
+| FR-12 | Cancel Booking | The customer can cancel their own confirmed booking before departure. The system marks the booking as CANCELLED and releases the seat. | Customer |
+| FR-13 | Refund | For a customer cancellation at least 14 days before departure, the system records a refund of 50% of the amount paid. For a cancellation less than 14 days before departure, the refund is zero. | System |
+| FR-14 | Confirmation | After confirming a booking, the system records a simulated confirmation notification that the customer can view. | System |
 | FR-15 | Manage Flights | The admin can add, edit, and delete flights. | Admin |
 | FR-16 | Manage Airports and Aircraft | The admin can manage airport and aircraft information. | Admin |
 
@@ -51,8 +51,7 @@ The system scope and users are described in [`project_description.md`](project_d
 - The interface must support desktop and mobile browsers.
 - Search results should appear within 3 seconds.
 - Passwords must be stored using hashing rather than plain text.
-- Only authorized administrators can access administrative management pages.
-- External payment and notification services will not be integrated.
+- Only authorized airline administrators can manage flights, airports, and aircraft. Only the System Manager can create and configure administrator accounts.- External payment and notification services will not be integrated.
 - Development will follow the required incremental development approach.
 - The project will use an Agentic AI development workflow.
 
