@@ -1,66 +1,68 @@
 # Traceability Matrix - Flight Booking System (Group 17)
 
-This document maps each system requirement to its related use cases, design artifacts, planned implementation version, and validation activities.
+This matrix maps the 16 functional requirements and 4 non-functional requirements in [Requirements](requirements.md) to their use cases, design artifacts, planned versions, and validation activities. Version assignments follow the [Incremental Development Plan](incremental_development_plan.md).
+
+For versions v0.1.0 through v0.6.0, each version has a corresponding design version with the `-design` suffix. For example, a row assigned to v0.4.0 is designed in v0.4.0-design and implemented in v0.4.0. The final integration release is v1.0.0.
 
 ## 1. Functional Requirements Traceability
 
-| Requirement ID | Requirement | Related Use Case / Design Element | Planned Version | Planned Validation | Status |
-|---|---|---|---|---|---|
-| FR-01 | Register | Register; User and Customer | v0.1.0-design, v0.1.0 | Registration tests | Design |
-| FR-02 | Admin Account Creation | Admin Account Creation; System Manager | v0.1.0-design, v0.1.0 | Admin account creation tests | Design |
-| FR-03 | Login and Logout | Login and Logout; Authentication | v0.1.0-design, v0.1.0 | Login and logout tests | Design |
-| FR-04 | Search Flights | Search Flights; Flight | v0.3.0-design, v0.3.0 | Flight search tests | Design |
-| FR-05 | Filter Results | Filter Results; Search Results | v0.3.0-design, v0.3.0 | Filtering and sorting tests | Design |
-| FR-06 | View Seats | View Seats; Seat | v0.4.0-design, v0.4.0 | Seat availability tests | Design |
-| FR-07 | Book Seat | Book Seat; Booking | v0.4.0-design, v0.4.0 | Booking creation tests | Design |
-| FR-08 | Prevent Double Booking | Seat Hold; Booking and Seat states | v0.4.0-design, v0.4.0 | Concurrent booking and hold expiration tests | Design |
-| FR-09 | Pay | Pay; Payment | v0.5.0-design, v0.5.0 | Simulated payment success and failure tests | Design |
-| FR-10 | E-ticket | E-ticket Generation; Ticket | v0.5.0-design, v0.5.0 | E-ticket generation tests | Design |
-| FR-11 | View Bookings | View Bookings; Booking | v0.6.0-design, v0.6.0 | Booking history tests | Design |
-| FR-12 | Cancel Booking | Cancel Booking; Booking | v0.6.0-design, v0.6.0 | Booking cancellation tests | Design |
-| FR-13 | Refund | Refund Calculation; Cancellation Policy | v0.6.0-design, v0.6.0 | Refund calculation tests | Design |
-| FR-14 | Confirmation | Booking Confirmation; Notification | v0.6.0-design, v0.6.0 | Confirmation generation tests | Design |
-| FR-15 | Manage Flights | Manage Flights; Flight Administration | v0.2.0-design, v0.2.0 | Flight management tests | Design |
-| FR-16 | Manage Airports and Aircraft | Manage Airports and Aircraft | v0.2.0-design, v0.2.0 | Airport and aircraft management tests | Design |
+Use case IDs refer to the [Use Case Descriptions](../uml/use_case_description.md). The design column links to the artifact that explains the relevant behavior or data.
+
+| ID | Requirement | Related use cases | Design | Planned version | Planned validation | Status |
+|---|---|---|---|---|---|---|
+| FR-01 | Register | UC-01 Register Account | [Use cases](../uml/use_case_description.md), [Class diagram](../uml/class_diagram.md) | v0.1.0 | Register a customer with a new email. Verify that a duplicate email is rejected and public registration creates only customer accounts. | Design |
+| FR-02 | Admin Account Creation | UC-18 Create Administrator Accounts | [Use cases](../uml/use_case_description.md), [Architecture](architecture.md) | v0.1.0 | Verify that the System Manager can create and configure an administrator account and that other roles cannot provision one. | Design |
+| FR-03 | Login and Logout | UC-02 Log In / Log Out | [Use cases](../uml/use_case_description.md) | v0.1.0 | Log in as a customer and as an administrator. Verify that incorrect credentials are rejected and logout ends the session. | Design |
+| FR-04 | Search Flights | UC-03 Search Flights | [Use cases](../uml/use_case_description.md) | v0.3.0 | Search by origin, destination, and travel date. Check both matching flights and a search with no matches. | Design |
+| FR-05 | Filter Results | UC-04 Filter and Sort Results | [Use cases](../uml/use_case_description.md) | v0.3.0 | Apply price and time filters and check the returned flights. Sort the results and check their order. | Design |
+| FR-06 | View Seats | UC-05 View Available Seats | [Use cases](../uml/use_case_description.md), [Class diagram](../uml/class_diagram.md) | v0.4.0 | Open a flight with available, held, and booked seats. Verify that the seat map shows each seat's current status for that flight. | Design |
+| FR-07 | Book Seat | UC-06 Select Seat, UC-07 Create Booking | [Booking activity](../uml/activity_booking.md), [Booking sequence](../uml/sequence_booking.md) | v0.4.0 | As a logged-in customer, select an available seat and submit the booking request. Verify that a PENDING booking references the correct customer, flight, and seat. | Design |
+| FR-08 | Prevent Double Booking | UC-07 Create Booking, UC-08 Hold Seat for 10 Minutes | [Booking sequence](../uml/sequence_booking.md), [Booking states](../uml/state_booking.md), [ERD](../uml/erd.md) | v0.4.0 | Submit two simultaneous requests for the same flight seat. Verify that only one obtains the hold. Let the 10-minute hold expire and verify that the pending booking becomes EXPIRED and the seat becomes available again. | Design |
+| FR-09 | Pay | UC-09 Complete Simulated Payment | [Booking sequence](../uml/sequence_booking.md), [Booking states](../uml/state_booking.md) | v0.5.0 | With an active hold, verify that successful payment confirms the booking and marks the seat as BOOKED. Verify that failed payment cancels the booking and releases the seat. A late payment result must leave an expired booking unconfirmed. | Design |
+| FR-10 | E-ticket | UC-10 Generate E-ticket | [Booking sequence](../uml/sequence_booking.md), [ERD](../uml/erd.md) | v0.5.0 | Verify that a confirmed booking has an e-ticket with a unique ticket number. Verify that failed payment and hold expiry produce no ticket. | Design |
+| FR-11 | View Bookings | UC-12 View My Bookings | [Use cases](../uml/use_case_description.md) | v0.6.0 | Use two customer accounts. Verify that each sees only their own bookings and the current status of each booking. | Design |
+| FR-12 | Cancel Booking | UC-13 Cancel Booking | [Booking states](../uml/state_booking.md), [Use cases](../uml/use_case_description.md) | v0.6.0 | Cancel an owned, confirmed booking before departure and verify that the seat is released. Verify that another customer's booking and a departed flight's booking cannot be cancelled by the customer. | Design |
+| FR-13 | Refund | UC-14 Calculate Refund | [Use cases](../uml/use_case_description.md), [ERD](../uml/erd.md) | v0.6.0 | Cancel more than 14 days before departure, exactly 14 days before, and just under 14 days before. Verify recorded refunds of 50%, 50%, and zero respectively. | Design |
+| FR-14 | Confirmation | UC-11 Record Booking Confirmation | [Booking sequence](../uml/sequence_booking.md), [Architecture](architecture.md) | v0.6.0 | Verify that successful booking confirmation creates a simulated notification that the customer can view. Check that an expired booking or failed payment produces no confirmation notification. | Design |
+| FR-15 | Manage Flights | UC-15 Manage Flights | [Use cases](../uml/use_case_description.md), [ERD](../uml/erd.md) | v0.2.0 | As an airline administrator, add, edit, and delete a flight. Verify that invalid flight details are rejected. | Design |
+| FR-16 | Manage Airports and Aircraft | UC-16 Manage Airports, UC-17 Manage Aircraft | [Use cases](../uml/use_case_description.md), [ERD](../uml/erd.md) | v0.2.0 | As an airline administrator, add, edit, and delete airport and aircraft records. Verify that records referenced by existing flights cannot be deleted. | Design |
 
 ## 2. Non-Functional Requirements Traceability
 
-| Requirement ID | Requirement | Related Design Element | Planned Version | Planned Validation | Status |
-|---|---|---|---|---|---|
-| NFR-01 | Password Hashing | Authentication and User Data | v0.1.0-design, v0.1.0 | Verify that passwords are stored using secure hashing | Design |
-| NFR-02 | Search Speed | Flight Search and Database Queries | v0.3.0-design, v0.3.0 | Measure search response time; target under 3 seconds | Design |
-| NFR-03 | Responsive UI | Web Application Interface | v1.0.0 | Test the interface on desktop and mobile browsers | Design |
-| NFR-04 | Admin-only Access | Authentication and Authorization | v0.1.0-design, v0.1.0, v0.2.0-design, v0.2.0 | Verify that unauthorized users cannot access administrative management pages | Design |
+| ID | Requirement | Related use cases or scope | Design | Planned version | Planned validation | Status |
+|---|---|---|---|---|---|---|
+| NFR-01 | Password Hashing | UC-01 Register Account, UC-02 Log In / Log Out, UC-18 Create Administrator Accounts | [Class diagram](../uml/class_diagram.md), [ERD](../uml/erd.md) | v0.1.0 | Create a customer and an administrator account. Review the password storage logic and verify that both records contain password hashes and that both users can authenticate. | Design |
+| NFR-02 | Search Speed | UC-03 Search Flights | [Use cases](../uml/use_case_description.md), [Incremental plan](incremental_development_plan.md) | v0.3.0 | Measure elapsed time from search submission until results appear. Record the test conditions and verify that results appear within 3 seconds. | Design |
+| NFR-03 | Responsive UI | Customer-facing and administrative web pages | [C4 container](../uml/c4_container.md), [Incremental plan](incremental_development_plan.md) | v1.0.0 | Use desktop and mobile browsers to complete the booking workflow and access the relevant administrative screens. Verify that controls and results remain usable on both. | Design |
+| NFR-04 | Admin-only Access | UC-02 Log In / Log Out, UC-15 Manage Flights, UC-16 Manage Airports, UC-17 Manage Aircraft | [Use cases](../uml/use_case_description.md), [Architecture](architecture.md) | v0.1.0 and v0.2.0 | Verify role assignment at login in v0.1.0. In v0.2.0, verify that airline administrators can manage flight, airport, and aircraft data and that the backend rejects these requests from other roles. | Design |
 
 ## 3. Design Artifact References
 
-| Design Artifact | Related Requirements / Scope |
+| Artifact | Scope |
 |---|---|
-| `uml/c4_context.md` | System scope and external actors |
-| `uml/c4_container.md` | Application containers and interactions |
-| `uml/component_diagram.md` | Main software components |
-| `uml/use_case_diagram.md` | Functional requirements and actors |
-| `uml/use_case_description.md` | Detailed use case scenarios |
-| `uml/sequence_booking.md` | Booking, seat hold, payment, and confirmation workflow |
-| `uml/activity_booking.md` | Main booking activity workflow |
-| `uml/state_booking.md` | Booking lifecycle and state transitions |
-| `uml/class_diagram.md` | Main application and domain classes |
-| `uml/erd.md` | Database entities and relationships |
-| `uml/deployment_diagram.md` | Deployment structure |
-| `docs/architecture.md` | System architecture and non-functional requirements |
+| [C4 System Context Diagram](../uml/c4_context.md) | System boundary and the Customer, Airline Administrator, and System Manager roles |
+| [C4 Container Diagram](../uml/c4_container.md) | Web application, Backend API, database, and their interactions |
+| [Component Diagram](../uml/component_diagram.md) | Software components and their responsibilities |
+| [Use Case Diagram](../uml/use_case_diagram.md) | Actors, use cases, and their relationships |
+| [Use Case Descriptions](../uml/use_case_description.md) | Use case IDs, preconditions, main flows, and alternative outcomes |
+| [Booking Sequence Diagram](../uml/sequence_booking.md) | Order of interactions during seat holding, payment, and confirmation |
+| [Booking Activity Diagram](../uml/activity_booking.md) | Customer booking workflow and alternative payment outcomes |
+| [Booking State Diagram](../uml/state_booking.md) | Booking states and the conditions for each transition |
+| [Class Diagram](../uml/class_diagram.md) | Domain classes, responsibilities, and relationships |
+| [Entity Relationship Diagram](../uml/erd.md) | Stored entities, relationships, and database constraints |
+| [Deployment Diagram](../uml/deployment_diagram.md) | Deployment structure |
+| [Architecture](architecture.md) | Application layers, access control, simulated services, and booking rules |
 
 ## 4. Status Definitions
 
-- **Design:** The requirement and its design representation are documented. Implementation and testing have not yet been completed.
-- **In Progress:** Implementation or validation is currently underway.
-- **Implemented:** The corresponding functionality has been implemented.
-- **Tested:** The relevant tests have been executed successfully.
-- **Verified:** The requirement has been checked against its acceptance criteria.
+| Status | Meaning |
+|---|---|
+| Design | The requirement and its design representation are documented. Implementation and validation are pending. |
+| In Progress | Implementation or validation is underway. |
+| Implemented | The functionality has been implemented. |
+| Tested | The relevant tests have run successfully and the results are recorded. |
+| Verified | The evidence has been reviewed against the requirement's acceptance criteria. |
 
 ## 5. Maintenance
 
-This matrix shall be updated during each development increment.
-
-When a requirement, design artifact, implementation module, or test changes, the corresponding traceability entry must also be updated.
-
-Planned versions and validation activities may be revised as the incremental development plan is reviewed.
+Update the affected rows whenever a requirement, use case, diagram, or planned version changes. During implementation, add links to the actual source files, tests, and recorded results. Update a requirement's status when the corresponding evidence is available.
