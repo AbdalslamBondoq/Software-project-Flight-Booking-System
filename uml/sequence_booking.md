@@ -1,5 +1,4 @@
-# Sequence Diagram - Book a Flight (UC-01)
-
+# Sequence Diagram - Book a Flight (UC-07 to UC-11)
 ## 1. Overview
 
 This sequence diagram illustrates the process of booking a flight, selecting a seat, holding the seat temporarily, completing simulated payment, and generating an e-ticket.
