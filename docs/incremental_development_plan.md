@@ -4,21 +4,29 @@
 
 Each capability has two planned versions. The `-design` version defines the expected behavior through diagrams and specifications. The working version implements that behavior and provides code, AI-run test results, and a demonstration. The acceptance criteria below describe what each version must demonstrate before it is considered complete.
 
-| Design version | Working version | Capability | Requirements | Design references |
+| Version | Type | Capability / Scope | Deliverable / Evidence | Requirements / Design Links |
 |---|---|---|---|---|
-| v0.1.0-design | v0.1.0 | User accounts, authentication, and administrator account creation | FR-01, FR-02, FR-03, NFR-01, NFR-04 | [Use case descriptions](../uml/use_case_description.md), [Class diagram](../uml/class_diagram.md) |
-| v0.2.0-design | v0.2.0 | Administration of flights, airports, and aircraft | FR-15, FR-16, NFR-04 | [ERD](../uml/erd.md), [Use case descriptions](../uml/use_case_description.md) |
-| v0.3.0-design | v0.3.0 | Flight search, filtering, and sorting | FR-04, FR-05, NFR-02 | [Use case diagram](../uml/use_case_diagram.md), [Use case descriptions](../uml/use_case_description.md) |
-| v0.4.0-design | v0.4.0 | Seat availability, pending bookings, and 10-minute holds | FR-06, FR-07, FR-08 | [Booking sequence](../uml/sequence_booking.md), [Booking states](../uml/state_booking.md), [ERD](../uml/erd.md) |
-| v0.5.0-design | v0.5.0 | Simulated payment, booking confirmation, and e-ticket issuance | FR-09, FR-10 | [Booking sequence](../uml/sequence_booking.md), [Booking activity](../uml/activity_booking.md) |
-| v0.6.0-design | v0.6.0 | My Bookings, cancellations, refunds, and simulated confirmation notifications | FR-11, FR-12, FR-13, FR-14 | [Booking states](../uml/state_booking.md), [Use case descriptions](../uml/use_case_description.md) |
-| — | v1.0.0 | Final integration, responsive UI, and documentation | All functional and non-functional requirements, including NFR-03 | [Architecture](architecture.md), [Traceability matrix](traceability_matrix.md) |
+| v0.1.0-design | Design | User accounts, authentication, and administrator account creation | Updated use case descriptions and class diagram | FR-01, FR-02, FR-03, NFR-01, NFR-04; [Use case descriptions](../uml/use_case_description.md), [Class diagram](../uml/class_diagram.md) |
+| v0.1.0 | Working | User accounts, authentication, and administrator account creation | Functional code, AI-run tests, demo | `src/auth`; `tests/` (planned) |
+| v0.2.0-design | Design | Administration of flights, airports, and aircraft | Updated ERD and administration use cases | FR-15, FR-16, NFR-04; [ERD](../uml/erd.md), [Use case descriptions](../uml/use_case_description.md) |
+| v0.2.0 | Working | Administration of flights, airports, and aircraft | Functional code, AI-run tests, demo | `src/flights`; `tests/` (planned) |
+| v0.3.0-design | Design | Flight search, filtering, and sorting | Updated search use cases and search specification | FR-04, FR-05, NFR-02; [Use case diagram](../uml/use_case_diagram.md), [Use case descriptions](../uml/use_case_description.md) |
+| v0.3.0 | Working | Flight search, filtering, and sorting | Functional code, AI-run tests, demo | `src/search`; `tests/` (planned) |
+| v0.4.0-design | Design | Seat availability, pending bookings, and 10-minute holds | Updated booking sequence, state diagram, and ERD | FR-06, FR-07, FR-08; [Booking sequence](../uml/sequence_booking.md), [Booking states](../uml/state_booking.md), [ERD](../uml/erd.md) |
+| v0.4.0 | Working | Seat availability, pending bookings, and 10-minute holds | Functional code, AI-run tests, demo | `src/booking`; `tests/` (planned) |
+| v0.5.0-design | Design | Simulated payment, booking confirmation, and e-ticket issuance | Updated booking sequence and activity diagram | FR-09, FR-10; [Booking sequence](../uml/sequence_booking.md), [Booking activity](../uml/activity_booking.md) |
+| v0.5.0 | Working | Simulated payment, booking confirmation, and e-ticket issuance | Functional code, AI-run tests, demo | `src/payment`; `tests/` (planned) |
+| v0.6.0-design | Design | My Bookings, cancellations, refunds, and simulated confirmation notifications | Updated state diagram and use case descriptions | FR-11, FR-12, FR-13, FR-14; [Booking states](../uml/state_booking.md), [Use case descriptions](../uml/use_case_description.md) |
+| v0.6.0 | Working | My Bookings, cancellations, refunds, and simulated confirmation notifications | Functional code, AI-run tests, demo | `src/bookings_mgmt`, `src/notifications`; `tests/` (planned) |
+| v1.0.0 | Final | Final integration, responsive UI, and documentation | Integrated system, final report PDF, demo | All FR and NFR, including NFR-03; [Architecture](architecture.md), [Traceability matrix](traceability_matrix.md) |
 
 ## 2. Increment Details
 
 ### v0.1.0 - User Accounts and Authentication
 
 **Main question.** How do customers register and log in, and who can create administrator accounts?
+
+**Tools.** Mermaid (use case and class diagrams), Claude Code, pytest with FastAPI TestClient.
 
 **Design acceptance criteria**
 
@@ -36,6 +44,8 @@ Each capability has two planned versions. The `-design` version defines the expe
 
 **Main question.** How does an airline administrator maintain flight data while preserving valid airport and aircraft references?
 
+**Tools.** Mermaid (ERD), Claude Code, pytest.
+
 **Design acceptance criteria**
 
 - The ERD shows that each flight has one origin airport, one destination airport, and one assigned aircraft.
@@ -51,6 +61,8 @@ Each capability has two planned versions. The `-design` version defines the expe
 
 **Main question.** How does a customer find flights that match their travel plans?
 
+**Tools.** Mermaid (use cases), Claude Code, pytest, response-time measurement for NFR-02.
+
 **Design acceptance criteria**
 
 - The search use case identifies origin, destination, and travel date as inputs and describes both matching results and the no-results case.
@@ -65,6 +77,8 @@ Each capability has two planned versions. The `-design` version defines the expe
 ### v0.4.0 - Seat Selection and Booking
 
 **Main question.** What happens when two customers request the same seat on the same flight?
+
+**Tools.** Mermaid (sequence and state diagrams), Claude Code, pytest including concurrent-request tests.
 
 **Design acceptance criteria**
 
@@ -82,6 +96,8 @@ Each capability has two planned versions. The `-design` version defines the expe
 
 **Main question.** Under what conditions can a pending booking be confirmed and an e-ticket issued?
 
+**Tools.** Mermaid (sequence and activity diagrams), Claude Code, pytest.
+
 **Design acceptance criteria**
 
 - The booking sequence and activity diagram distinguish successful payment, failed payment, and hold expiry during payment.
@@ -96,6 +112,8 @@ Each capability has two planned versions. The `-design` version defines the expe
 ### v0.6.0 - Booking Management, Cancellation, and Notifications
 
 **Main question.** How does a customer view or cancel a reservation, and which refund applies?
+
+**Tools.** Mermaid (state diagram), Claude Code, pytest.
 
 **Design acceptance criteria**
 
@@ -114,6 +132,8 @@ Each capability has two planned versions. The `-design` version defines the expe
 ### v1.0.0 - Final Release
 
 **Main question.** Does the integrated application meet its requirements across the complete booking workflow?
+
+**Tools.** Claude Code, pytest, desktop and mobile browser testing, Pandoc (report PDF), GitHub.
 
 **Acceptance criteria**
 
