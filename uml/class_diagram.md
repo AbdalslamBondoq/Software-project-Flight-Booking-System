@@ -99,6 +99,12 @@ classDiagram
         +issue()
     }
 
+    class Notification {
+        +int id
+        +string message
+        +datetime createdAt
+    }
+
     class PaymentService {
         +processPayment()
         +processRefund()
@@ -149,9 +155,11 @@ classDiagram
 
     Booking "1" --> "0..1" Payment : has
     Booking "1" --> "0..1" Ticket : generates after payment
+    Booking "1" --> "0..1" Notification : confirmed by
 
     Booking ..> PaymentService : uses
     Booking ..> NotificationService : uses
+    NotificationService ..> Notification : creates
 
     Admin ..> Flight : manages
     Admin ..> Airport : manages
@@ -180,6 +188,7 @@ classDiagram
 | Payment | Stores simulated payment transaction information and its status. |
 | Ticket | Represents the electronic ticket issued after successful payment. |
 | PaymentService | Handles simulated payment processing and refunds. |
+| Notification | Stores the simulated booking confirmation that the customer can view (FR-14). |
 | NotificationService | Handles simulated booking confirmation notifications. |
 
 ## 4. Important Business Rules
