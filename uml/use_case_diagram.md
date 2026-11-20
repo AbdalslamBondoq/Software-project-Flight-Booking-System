@@ -31,69 +31,69 @@ flowchart LR
 
         subgraph CustomerCases["Customer Use Cases"]
             direction TB
-            UC1(["Register Account"])
-            UC2(["Log In / Log Out"])
-            UC3(["Search Flights"])
-            UC4(["Filter and Sort Results"])
-            UC5(["View Available Seats"])
-            UC6(["Select Seat"])
-            UC7(["Create Booking"])
-            UC8(["Hold Seat for 10 Minutes"])
-            UC9(["Complete Simulated Payment"])
-            UC10(["Confirm Booking"])
-            UC11(["Generate E-ticket"])
-            UC12(["Record Booking Confirmation"])
-            UC13(["View My Bookings"])
-            UC14(["Cancel Booking"])
-            UC15(["Calculate Refund"])
+            UC01(["UC-01 Register Account"])
+            UC02(["UC-02 Log In / Log Out"])
+            UC03(["UC-03 Search Flights"])
+            UC04(["UC-04 Filter and Sort Results"])
+            UC05(["UC-05 View Available Seats"])
+            UC06(["UC-06 Select Seat"])
+            UC07(["UC-07 Create Booking"])
+            UC08(["UC-08 Hold Seat for 10 Minutes"])
+            UC09(["UC-09 Complete Simulated Payment"])
+            UC19(["UC-19 Confirm Booking"])
+            UC10(["UC-10 Generate E-ticket"])
+            UC11(["UC-11 Record Booking Confirmation"])
+            UC12(["UC-12 View My Bookings"])
+            UC13(["UC-13 Cancel Booking"])
+            UC14(["UC-14 Calculate Refund"])
         end
 
         subgraph AdminCases["Administration Use Cases"]
             direction TB
-            UC16(["Manage Flights"])
-            UC17(["Manage Airports"])
-            UC18(["Manage Aircraft"])
-            UC19(["Create Administrator Accounts"])
+            UC15(["UC-15 Manage Flights"])
+            UC16(["UC-16 Manage Airports"])
+            UC17(["UC-17 Manage Aircraft"])
+            UC18(["UC-18 Create Administrator Accounts"])
         end
     end
 
     %% CUSTOMER ASSOCIATIONS
-    Customer --- UC1
-    Customer --- UC2
-    Customer --- UC3
-    Customer --- UC4
-    Customer --- UC5
-    Customer --- UC6
-    Customer --- UC7
-    Customer --- UC9
+    Customer --- UC01
+    Customer --- UC02
+    Customer --- UC03
+    Customer --- UC04
+    Customer --- UC05
+    Customer --- UC06
+    Customer --- UC07
+    Customer --- UC09
+    Customer --- UC12
     Customer --- UC13
-    Customer --- UC14
 
     %% ADMIN ASSOCIATIONS
-    Admin --- UC2
+    Admin --- UC02
+    Admin --- UC15
     Admin --- UC16
     Admin --- UC17
-    Admin --- UC18
 
     %% SYSTEM MANAGER ASSOCIATION
-    Manager --- UC19
+    Manager --- UC18
 
     %% INCLUDE RELATIONSHIPS
-    UC7 -.->|«include»| UC8
-    UC14 -.->|«include»| UC15
-    UC10 -.->|«include»| UC11
-    UC10 -.->|«include»| UC12
+    UC07 -.->|«include»| UC08
+    UC13 -.->|«include»| UC14
+    UC19 -.->|«include»| UC10
+    UC19 -.->|«include»| UC11
 
     %% EXTEND RELATIONSHIPS
-    UC4 -.->|«extend»| UC3
-    UC10 -.->|«extend» payment successful and hold active| UC9
+    UC04 -.->|«extend»| UC03
+    UC19 -.->|«extend» payment successful and hold active| UC09
 
     %% STYLING
     classDef actor fill:#08427b,stroke:#052e56,color:#fff
     classDef usecase fill:#438dd5,stroke:#2e6295,color:#fff
 
     class Customer,Admin,Manager actor
-    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11,UC12,UC13,UC14,UC15,UC16,UC17,UC18,UC19 usecase
+    class UC01,UC02,UC03,UC04,UC05,UC06,UC07,UC08,UC09,UC19,UC10,UC11,UC12,UC13,UC14,UC15,UC16,UC17,UC18 usecase
 ```
 
 ## 3. Actor Descriptions
@@ -108,25 +108,25 @@ flowchart LR
 
 | Use Case | Description |
 |---|---|
-| Register Account | Allows customers to create new accounts. |
-| Log In / Log Out | Allows customers and administrators to access and leave their accounts. |
-| Create Administrator Accounts | Allows the System Manager to create and configure administrator accounts in advance. |
-| Search Flights | Searches for flights by origin, destination, and date. |
-| Filter and Sort Results | Allows customers to filter and sort search results by price and time. |
-| View Available Seats | Displays the available seats for a selected flight. |
-| Select Seat | Allows customers to select an available seat. |
-| Create Booking | Creates a pending booking for the selected flight and seat. |
-| Hold Seat for 10 Minutes | Temporarily holds the selected seat while payment is pending. |
-| Complete Simulated Payment | Processes a simulated payment for a pending booking. |
-| Confirm Booking | Confirms the booking when payment succeeds and the seat hold is still active. |
-| Generate E-ticket | Generates an e-ticket after successful booking confirmation. |
-| Record Booking Confirmation | Records a simulated booking confirmation notification. |
-| View My Bookings | Displays the customer's existing bookings. |
-| Cancel Booking | Allows customers to cancel their bookings according to the cancellation policy. |
-| Calculate Refund | Calculates the applicable refund according to the cancellation policy. |
-| Manage Flights | Allows administrators to add, edit, and delete flights. |
-| Manage Airports | Allows administrators to manage airport information. |
-| Manage Aircraft | Allows administrators to manage aircraft information. |
+| UC-01 Register Account | Allows customers to create new accounts. |
+| UC-02 Log In / Log Out | Allows customers and administrators to access and leave their accounts. |
+| UC-18 Create Administrator Accounts | Allows the System Manager to create and configure administrator accounts in advance. |
+| UC-03 Search Flights | Searches for flights by origin, destination, and date. |
+| UC-04 Filter and Sort Results | Allows customers to filter and sort search results by price and time. |
+| UC-05 View Available Seats | Displays the available seats for a selected flight. |
+| UC-06 Select Seat | Allows customers to select an available seat. |
+| UC-07 Create Booking | Creates a pending booking for the selected flight and seat. |
+| UC-08 Hold Seat for 10 Minutes | Temporarily holds the selected seat while payment is pending. |
+| UC-09 Complete Simulated Payment | Processes a simulated payment for a pending booking. |
+| UC-19 Confirm Booking | Confirms the booking when payment succeeds and the seat hold is still active. |
+| UC-10 Generate E-ticket | Generates an e-ticket after successful booking confirmation. |
+| UC-11 Record Booking Confirmation | Records a simulated booking confirmation notification. |
+| UC-12 View My Bookings | Displays the customer's existing bookings. |
+| UC-13 Cancel Booking | Allows customers to cancel their bookings according to the cancellation policy. |
+| UC-14 Calculate Refund | Calculates the applicable refund according to the cancellation policy. |
+| UC-15 Manage Flights | Allows administrators to add, edit, and delete flights. |
+| UC-16 Manage Airports | Allows administrators to manage airport information. |
+| UC-17 Manage Aircraft | Allows administrators to manage aircraft information. |
 
 ## 5. Use Case Relationships
 

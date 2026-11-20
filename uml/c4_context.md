@@ -6,10 +6,10 @@ This diagram shows the Flight Booking System as a black box, its users, and thei
 
 ```mermaid
 flowchart TD
-    Customer["Customer<br/>Searches flights, books seats, makes payments and manages bookings."]
-    Admin["Airline Administrator<br/>Manages flights, airports and aircraft."]
-    Manager["System Manager<br/>Creates and configures administrator accounts in advance."]
-    System["Flight Booking System<br/>Customers book flights, airline administrators manage flight data, and the system manager creates administrator accounts."]
+    Customer["«Person»<br/><b>Customer</b><br/>Searches flights, books seats, makes payments and manages bookings."]
+    Admin["«Person»<br/><b>Airline Administrator</b><br/>Manages flights, airports and aircraft."]
+    Manager["«Person»<br/><b>System Manager</b><br/>Creates and configures administrator accounts in advance."]
+    System["«Software System»<br/><b>Flight Booking System</b><br/>Customers book flights, airline administrators manage flight data, and the system manager creates administrator accounts."]
 
     Customer -->|Searches, books, pays and manages bookings| System
     Admin -->|Manages flights, airports and aircraft| System

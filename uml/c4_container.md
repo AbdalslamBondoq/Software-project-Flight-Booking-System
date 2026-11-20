@@ -8,23 +8,23 @@ Flight Booking System and how they communicate.
 ```mermaid
 flowchart TB
 
-    customer["Customer"]
-    admin["Airline Administrator"]
-    manager["System Manager"]
+    customer["«Person»<br/><b>Customer</b>"]
+    admin["«Person»<br/><b>Airline Administrator</b>"]
+    manager["«Person»<br/><b>System Manager</b>"]
 
-    subgraph boundary["Flight Booking System"]
+    subgraph boundary["Flight Booking System «Software System»"]
 
-        web["Web Application<br/>HTML / CSS / JavaScript<br/><br/>Customer interface,<br/>admin dashboard and account provisioning."]
+        web["«Container»<br/><b>Web Application</b><br/>[HTML / CSS / JavaScript]<br/><br/>Customer interface,<br/>admin dashboard and account provisioning."]
 
-        api["Backend API<br/>Python / FastAPI<br/><br/>Authentication, authorization,<br/>flight search, booking logic,<br/>seat holding, payment simulation,<br/>notifications and refunds."]
+        api["«Container»<br/><b>Backend API</b><br/>[Python / FastAPI]<br/><br/>Authentication, authorization,<br/>flight search, booking logic,<br/>seat holding, payment simulation,<br/>notifications and refunds."]
 
-        db[("Database<br/>SQLite<br/><br/>Users, roles, airports,<br/>aircraft, flights, seats,<br/>bookings, payments and tickets.")]
+        db[("«Container: Database»<br/><b>Database</b><br/>[SQLite]<br/><br/>Users, roles, airports,<br/>aircraft, flights, seats,<br/>bookings, payments and tickets.")]
 
     end
 
     customer -->|"HTTPS"| web
     admin -->|"HTTPS"| web
-    manager -->|"Controlled account setup"| web
+    manager -->|"Creates administrator accounts<br/>[HTTPS]"| web
 
     web -->|"HTTPS / JSON"| api
 
