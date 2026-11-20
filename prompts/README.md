@@ -1,6 +1,6 @@
 # Prompt Records
 
-This folder stores one Markdown file for each meaningful task given to the coding agent, as required by Section 3.3 of the project instructions. Each record is linked from [`docs/ai_development_log.md`](../docs/ai_development_log.md).
+This folder stores one Markdown file for each meaningful task given to the coding agent, as required by Section 3.3 of the project instructions. Each record is linked from the AI development log in `docs/`.
 
 ## File Naming
 
@@ -45,4 +45,4 @@ This folder stores one Markdown file for each meaningful task given to the codin
 
 | File | Version | Task |
 |---|---|---|
-| [v0.1.0-design-docs-review.md](v0.1.0-design-docs-review.md) | v0.1.0-design | Documentation review against the project instructions |
+| - | - | No records yet |
