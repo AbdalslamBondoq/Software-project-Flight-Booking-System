@@ -6,7 +6,7 @@ This Entity Relationship Diagram (ERD) represents the database structure of the 
 
 It defines the main entities, their attributes, primary keys, foreign keys, and relationships.
 
-The database supports customer accounts, administrator accounts, airports, aircraft, flights, seats, bookings, simulated payments, and electronic tickets.
+The database supports customer accounts, administrator accounts, airports, aircraft, flights, seats, bookings, simulated payments, electronic tickets, and simulated booking confirmation notifications.
 
 ## 2. Entity Relationship Diagram
 
@@ -27,6 +27,7 @@ erDiagram
 
     BOOKING ||--o| PAYMENT : has
     BOOKING ||--o| TICKET : generates
+    BOOKING ||--o| NOTIFICATION : "confirmed by"
 
     USER {
         int id PK
@@ -95,6 +96,13 @@ erDiagram
         string ticket_number UK
         datetime issued_at
     }
+
+    NOTIFICATION {
+        int id PK
+        int booking_id FK
+        string message
+        datetime created_at
+    }
 ```
 
 ## 3. Entity Descriptions
@@ -109,6 +117,7 @@ erDiagram
 | BOOKING | Stores customer reservations, booking status, temporary seat holds, and refund information. |
 | PAYMENT | Stores simulated payment transaction information and payment status. |
 | TICKET | Stores electronic ticket information issued after successful payment. |
+| NOTIFICATION | Stores the simulated booking confirmation that the customer can view (FR-14). |
 
 ## 4. Important Database Rules and Constraints
 
@@ -148,6 +157,11 @@ erDiagram
 - A ticket is generated only after successful payment.
 - Each ticket has a unique ticket number.
 
+### NOTIFICATION
+- Each notification belongs to one booking.
+- A notification is recorded only after the booking is confirmed.
+- Notifications are simulated and are not sent as real emails.
+
 ## 5. Cancellation and Refund Policy
 
 - Customers can cancel confirmed bookings before flight departure.
@@ -169,6 +183,7 @@ erDiagram
 | SEAT - BOOKING | One-to-Many | A seat can have multiple historical bookings over time, but only one active booking at a time. |
 | BOOKING - PAYMENT | One-to-Zero-or-One | A booking may have no payment initially or one payment record. |
 | BOOKING - TICKET | One-to-Zero-or-One | A booking may have no ticket until payment succeeds. |
+| BOOKING - NOTIFICATION | One-to-Zero-or-One | A booking has a confirmation notification only after it is confirmed. |
 
 ## 7. Additional Implementation Notes
 
