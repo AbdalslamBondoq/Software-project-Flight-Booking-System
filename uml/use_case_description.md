@@ -270,6 +270,21 @@ The descriptions are based on the Use Case Diagram and the functional requiremen
 | Alternative Flow | If the information is invalid or the account already exists, the system displays an error message. |
 | Postconditions | A new administrator account is created and can be used to access authorized administrative functions. |
 
+### UC-19: Confirm Booking
+
+| Field | Description |
+|---|---|
+| Use Case ID | UC-19 |
+| Use Case Name | Confirm Booking |
+| Primary Actor | System |
+| Description | Confirms a pending booking after a successful simulated payment while the seat hold is still active. |
+| Preconditions | A PENDING booking exists, the simulated payment for it succeeded, and the booking still owns an active seat hold. |
+| Trigger | The simulated payment in UC-09 returns a successful result. |
+| Main Flow | 1. The system checks that the booking is still PENDING and that its seat hold has not expired. 2. In one database transaction, the system marks the booking as CONFIRMED and the seat as BOOKED. 3. The system generates the e-ticket (UC-10). 4. The system records the simulated booking confirmation (UC-11). 5. The system displays the confirmation and e-ticket to the customer. |
+| Alternative Flow | If the seat hold has expired, the booking becomes EXPIRED, the seat is released, and no e-ticket or confirmation is created. |
+| Postconditions | The booking is CONFIRMED, the seat is BOOKED, and the e-ticket and confirmation notification are stored. |
+| Related Use Cases | Extends UC-09 Complete Simulated Payment when payment succeeds and the hold is active. Includes UC-10 Generate E-ticket and UC-11 Record Booking Confirmation. |
+
 ## 4. General Business Rules
 
 1. Only customers can register through the public registration interface.
