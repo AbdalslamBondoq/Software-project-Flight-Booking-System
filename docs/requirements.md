@@ -12,7 +12,7 @@ The system scope and users are described in [`project_description.md`](project_d
 | FR-04 | Search Flights | The customer can search for flights by origin, destination, and date. | Customer |
 | FR-05 | Filter Results | The customer can filter and sort search results by price and time. | Customer |
 | FR-06 | View Seats | The customer can view available seats for a flight. | Customer |
-| FR-07 | Book Seat | The customer can select an available seat and create a booking. | Customer || FR-07 | Book Seat | A logged-in customer can select an available seat on a flight and create a PENDING booking. | Customer |
+| FR-07 | Book Seat | A logged-in customer can select an available seat on a flight and create a PENDING booking. | Customer |
 | FR-08 | Prevent Double Booking | When a pending booking is created, the system holds the seat for 10 minutes. Only one booking can hold or reserve the same seat on the same flight at a time. If the hold expires before confirmation, the system marks the pending booking as EXPIRED and releases the seat. | System |
 | FR-09 | Pay | The customer can make a simulated payment for a pending booking. If payment succeeds while the seat hold is active, the system marks the booking as CONFIRMED and the seat as BOOKED. If payment fails while the hold is active, the system marks the booking as CANCELLED and releases the seat. | Customer |
 | FR-10 | E-ticket | The system issues an e-ticket only after successful payment and booking confirmation. | System |
@@ -51,7 +51,8 @@ The system scope and users are described in [`project_description.md`](project_d
 - The interface must support desktop and mobile browsers.
 - Search results should appear within 3 seconds.
 - Passwords must be stored using hashing rather than plain text.
-- Only authorized airline administrators can manage flights, airports, and aircraft. Only the System Manager can create and configure administrator accounts.- External payment and notification services will not be integrated.
+- Only authorized airline administrators can manage flights, airports, and aircraft. Only the System Manager can create and configure administrator accounts.
+- External payment and notification services will not be integrated.
 - Development will follow the required incremental development approach.
 - The project will use an Agentic AI development workflow.
 
