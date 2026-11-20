@@ -4,7 +4,7 @@
 
 This document describes the physical deployment architecture of the Flight Booking System, including the hardware nodes, software components, and communication between them.
 
-The system uses a web-based three-tier architecture consisting of a client layer, an application layer, and a database layer.
+The system is deployed on two nodes: the client device and the application server, which also stores the SQLite database file.
 
 ## 2. Deployment Diagram
 
@@ -91,7 +91,7 @@ The modules below are the components of the [Component Diagram](component_diagra
 
 ## 6. Deployment Considerations
 
-- The system follows a three-tier architecture.
+- The system uses a layered (three-tier) logical architecture deployed on two nodes.
 - The frontend communicates with the backend through HTTPS in the deployment environment.
 - HTTP may be used during local development.
 - The frontend does not access the database directly.
