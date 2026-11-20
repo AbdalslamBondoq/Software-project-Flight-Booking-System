@@ -53,6 +53,7 @@ sequenceDiagram
                     W-->>C: Display booking confirmation and e-ticket
 
                 else Payment failed
+                    B->>D: Save payment with status FAILED
                     B->>D: Mark booking as cancelled and release seat
                     D-->>B: Booking cancelled and seat released
                     B-->>W: Payment failed
@@ -112,6 +113,7 @@ sequenceDiagram
 ### 4.2 Payment Failure
 
 - The simulated payment service returns a failure result.
+- The payment record is saved with status FAILED.
 - The booking is marked as cancelled.
 - The temporary seat hold is released.
 - The customer receives a payment failure message.
