@@ -34,14 +34,12 @@ flowchart TB
         Booking --> Payment
         Booking --> Notification
         Booking --> Ticket
-    end
 
-    subgraph DatabaseServer["Database Layer"]
-        DB[("SQLite Database")]
+        DB[("SQLite database file<br/>flight_booking.db")]
     end
 
     UI <-->|HTTPS Requests and Responses| FastAPI
-    FastAPI <-->|Database Queries and Results| DB
+    FastAPI <-->|SQL queries through the Python SQLite driver| DB
 ```
 
 ## 3. Deployment Nodes
@@ -53,7 +51,7 @@ flowchart TB
 | Web Interface | Built using HTML, CSS, and JavaScript. |
 | Application Server | Hosts and runs the Python FastAPI backend. |
 | FastAPI Backend | Handles requests, business logic, authentication, and communication with the database. |
-| SQLite Database | Stores users, airports, aircraft, flights, seats, bookings, payments, and tickets. |
+| SQLite database file | A single database file stored on the application server and accessed by the backend. Stores users, airports, aircraft, flights, seats, bookings, payments, tickets, and notifications. |
 
 ## 4. Software Components
 
@@ -82,7 +80,7 @@ flowchart TB
 - HTTP may be used during local development.
 - The frontend does not access the database directly.
 - The backend is responsible for all business logic and database access.
-- SQLite stores the system's persistent data.
+- SQLite stores the system's persistent data in a single file on the application server. SQLite is an embedded database, so it does not run on a separate database server.
 - Passwords must be stored as secure hashes.
 - Seat reservations expire automatically after 10 minutes if payment is not completed.
 - Payment and notification services are simulated internal modules.
