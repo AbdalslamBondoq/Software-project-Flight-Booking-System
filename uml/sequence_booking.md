@@ -3,7 +3,7 @@
 
 This sequence diagram illustrates the process of booking a flight, selecting a seat, holding the seat temporarily, completing simulated payment, and generating an e-ticket.
 
-It describes the interactions between the Customer, Web Application, Backend API, Database, Simulated Payment Service, and Simulated Notification Service.
+It describes the interactions between the Customer and the components of the [Component Diagram](component_diagram.md): Customer Interface, API Routes, Booking Management, Seat Availability and Holding, Simulated Payment Processing, E-ticket Generation, Simulated Booking Confirmation, the SQLite Database, and the Hold Expiration Task.
 
 The system uses a 10-minute temporary seat hold to prevent multiple customers from booking the same seat simultaneously.
 
@@ -12,78 +12,91 @@ The system uses a 10-minute temporary seat hold to prevent multiple customers fr
 ```mermaid
 sequenceDiagram
     actor C as Customer
-    participant W as Web App
-    participant B as Backend API
-    participant D as Database
-    participant P as Payment Service (simulated)
-    participant N as Notification Service (simulated)
-    participant E as Background Expiration Task
+    participant UI as Customer Interface
+    participant API as API Routes
+    participant BM as Booking Management
+    participant SH as Seat Availability and Holding
+    participant PP as Simulated Payment Processing
+    participant T as E-ticket Generation
+    participant N as Simulated Booking Confirmation
+    participant D as SQLite Database
+    participant E as Hold Expiration Task
 
-    %% FLIGHT AND SEAT SELECTION
-    C->>W: Select flight and seat
-    W->>B: POST /bookings (flightId, seatId)
-    B->>D: Check flight and seat availability
-    D-->>B: Flight and seat status
+    %% SEAT SELECTION AND HOLD
+    C->>UI: Select flight and seat
+    UI->>API: POST /bookings (flightId, seatId)
+    API->>BM: Create booking request
+    BM->>SH: Acquire seat hold
+    SH->>D: In one transaction: check seat, hold seat, create PENDING booking
 
     alt Seat is available
-        %% CREATE BOOKING AND HOLD SEAT
-        B->>D: Atomically hold seat and create pending booking
-        Note over B,D: Hold expires after 10 minutes (expiresAt)
-        D-->>B: Booking ID and hold expiration time
-        B-->>W: Booking pending + expiration time
-        W-->>C: Display booking details and payment countdown
+        D-->>SH: Booking ID and hold expiration time
+        Note over SH,D: Hold expires after 10 minutes (expiresAt)
+        SH-->>BM: Hold acquired
+        BM-->>API: Booking PENDING + expiration time
+        API-->>UI: Booking PENDING + expiration time
+        UI-->>C: Display booking details and payment countdown
 
         par Customer payment attempt
-            C->>W: Confirm payment
-            W->>B: POST /payments (bookingId)
-            B->>D: Verify booking status and seat hold
-            D-->>B: Booking and hold status
+            C->>UI: Confirm payment
+            UI->>API: POST /payments (bookingId)
+            API->>BM: Pay for booking
+            BM->>SH: Verify booking is PENDING and hold is active
+            SH->>D: Read booking and hold status
+            D-->>SH: Booking and hold status
+            SH-->>BM: Hold status
 
             alt Hold is still active
-                B->>P: Process simulated payment
-                P-->>B: Payment result
+                BM->>PP: Process simulated payment
+                PP->>D: Save payment with status SUCCESSFUL or FAILED
+                PP-->>BM: Payment result
 
                 alt Payment successful and hold is still valid
-                    B->>D: Atomically confirm booking and mark seat as booked
-                    B->>D: Save payment and generate e-ticket
-                    D-->>B: Booking confirmed and ticket created
-                    B->>N: Record booking confirmation
-                    N-->>B: Confirmation recorded
-                    B-->>W: Booking confirmed + e-ticket
-                    W-->>C: Display booking confirmation and e-ticket
+                    BM->>SH: Confirm hold
+                    SH->>D: In one transaction: booking CONFIRMED, seat BOOKED
+                    BM->>T: Generate e-ticket
+                    T->>D: Save ticket
+                    BM->>N: Record booking confirmation
+                    N->>D: Save notification
+                    BM-->>API: Booking confirmed + e-ticket
+                    API-->>UI: Booking confirmed + e-ticket
+                    UI-->>C: Display booking confirmation and e-ticket
 
                 else Payment failed
-                    B->>D: Save payment with status FAILED
-                    B->>D: Mark booking as cancelled and release seat
-                    D-->>B: Booking cancelled and seat released
-                    B-->>W: Payment failed
-                    W-->>C: Display payment failure message
+                    BM->>SH: Release seat
+                    SH->>D: Mark booking CANCELLED and release seat
+                    BM-->>API: Payment failed
+                    API-->>UI: Payment failed
+                    UI-->>C: Display payment failure message
 
                 else Hold expired during payment processing
-                    B->>D: Verify hold expiration and expire pending booking
-                    D-->>B: Booking expired and seat released
-                    B-->>W: Booking expired
-                    W-->>C: Display expiration message
+                    BM->>SH: Expire booking
+                    SH->>D: Mark booking EXPIRED and release seat
+                    BM-->>API: Booking expired
+                    API-->>UI: Booking expired
+                    UI-->>C: Display expiration message
                 end
 
             else Hold expired before payment
-                B->>D: Mark booking as expired and release seat
-                D-->>B: Seat released
-                B-->>W: Booking expired
-                W-->>C: Ask customer to select another seat
+                BM->>SH: Expire booking
+                SH->>D: Mark booking EXPIRED and release seat
+                BM-->>API: Booking expired
+                API-->>UI: Booking expired
+                UI-->>C: Ask customer to select another seat
             end
 
         and Automatic seat hold expiration
-            Note over E,D: The expiration task checks holds every time they reach their expiration time.
-            E->>D: Find pending bookings with expired seat holds
-            D-->>E: Expired pending bookings
-            E->>D: Atomically expire pending bookings and release seats
-            D-->>E: Expired bookings updated and seats released
+            E->>SH: Expire holds past their expiration time
+            SH->>D: In one transaction: expire PENDING bookings and release seats
+            D-->>SH: Expired bookings updated and seats released
         end
 
     else Seat is already taken
-        B-->>W: Seat not available
-        W-->>C: Ask customer to choose another seat
+        D-->>SH: Seat not available
+        SH-->>BM: Hold refused
+        BM-->>API: Seat not available
+        API-->>UI: Seat not available
+        UI-->>C: Ask customer to choose another seat
     end
 ```
 
