@@ -17,23 +17,33 @@ flowchart TB
     end
 
     subgraph Server["Application Server"]
-        FastAPI["FastAPI Backend Application"]
+        FastAPI["FastAPI Backend Application<br/>API Routes"]
 
-        Auth["Authentication Module"]
-        Flight["Flight Management Module"]
-        Booking["Booking Management Module"]
-        Seat["Seat Management Module"]
-        Payment["Simulated Payment Module"]
-        Notification["Simulated Notification Module"]
-        Ticket["Ticket Generation Module"]
+        Auth["Authentication"]
+        Access["Role-Based Access Control"]
+        Accounts["Admin Account Management"]
+        Search["Flight Search"]
+        FlightAdmin["Flight Management"]
+        Booking["Booking Management"]
+        Seats["Seat Availability and Holding"]
+        Cancellation["Cancellation and Refund Calculation"]
+        Payment["Simulated Payment Processing"]
+        Ticket["E-ticket Generation"]
+        Notification["Simulated Booking Confirmation"]
 
         FastAPI --> Auth
-        FastAPI --> Flight
-        FastAPI --> Booking
-        Booking --> Seat
+        FastAPI --> Access
+        FastAPI --> Search
+        Access --> Accounts
+        Access --> FlightAdmin
+        Access --> Booking
+        Booking --> Seats
         Booking --> Payment
-        Booking --> Notification
         Booking --> Ticket
+        Booking --> Notification
+        Booking --> Cancellation
+        Cancellation --> Payment
+        Cancellation --> Seats
 
         DB[("SQLite database file<br/>flight_booking.db")]
     end
@@ -55,13 +65,19 @@ flowchart TB
 
 ## 4. Software Components
 
-- **Authentication Module:** Handles customer login and authentication.
-- **Flight Management Module:** Handles flight searches and flight information.
-- **Booking Management Module:** Creates, confirms, cancels, and expires bookings.
-- **Seat Management Module:** Checks seat availability and manages temporary seat holds.
-- **Simulated Payment Module:** Processes simulated payment transactions without using a real payment gateway.
-- **Simulated Notification Module:** Handles simulated booking confirmation notifications.
-- **Ticket Generation Module:** Generates electronic tickets after successful payment and booking confirmation.
+The modules below are the components of the [Component Diagram](component_diagram.md), all deployed inside the FastAPI backend on the application server.
+
+- **Authentication:** Registers customers, hashes passwords, validates login credentials, and ends user sessions on logout.
+- **Role-Based Access Control:** Checks the authenticated user's role before allowing a protected operation.
+- **Admin Account Management:** Allows the System Manager to create and configure administrator accounts.
+- **Flight Search:** Finds flights by origin, destination, and date, and supports filtering and sorting by price and time.
+- **Flight Management:** Allows airline administrators to manage flights, schedules, airports, and aircraft.
+- **Booking Management:** Creates pending bookings, retrieves the customer's own bookings, and coordinates payment, confirmation, ticket issuance, and cancellation.
+- **Seat Availability and Holding:** Displays seat availability, manages 10-minute holds, and releases seats when a hold expires or a booking is cancelled.
+- **Cancellation and Refund Calculation:** Checks booking ownership and cancellation eligibility, calculates the refund, and coordinates seat release.
+- **Simulated Payment Processing:** Produces a simulated payment result, records the transaction, and processes eligible simulated refunds.
+- **E-ticket Generation:** Generates a unique e-ticket for a confirmed booking and stores it in the database.
+- **Simulated Booking Confirmation:** Records a confirmation message after the booking is confirmed.
 
 ## 5. Communication Between Nodes
 
@@ -69,8 +85,8 @@ flowchart TB
 2. The web interface sends requests to the FastAPI backend through HTTPS.
 3. The backend processes requests and applies the required business rules.
 4. The backend communicates with the SQLite database to retrieve or update information.
-5. The simulated payment module processes payment requests internally.
-6. The notification module handles simulated booking confirmation.
+5. The Simulated Payment Processing component processes payment requests internally.
+6. The Simulated Booking Confirmation component records the booking confirmation.
 7. The backend returns the appropriate response to the web interface.
 
 ## 6. Deployment Considerations
