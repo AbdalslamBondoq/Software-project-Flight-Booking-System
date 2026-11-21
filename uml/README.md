@@ -14,6 +14,7 @@ Editable diagram sources for the Flight Booking System. Each file contains a Mer
 | [sequence_booking.md](sequence_booking.md) | Booking sequence diagram |
 | [activity_booking.md](activity_booking.md) | Booking activity diagram |
 | [state_booking.md](state_booking.md) | Booking state diagram |
+| [state_seat.md](state_seat.md) | Seat state diagram |
 | [erd.md](erd.md) | Entity relationship diagram |
 
 When the implementation changes the design, the affected diagram is updated in the same increment.
