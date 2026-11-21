@@ -18,7 +18,7 @@ flowchart TB
 
         api["«Container»<br/><b>Backend API</b><br/>[Python / FastAPI]<br/><br/>Authentication, authorization,<br/>flight search, booking logic,<br/>seat holding, payment simulation,<br/>notifications and refunds."]
 
-        db[("«Container: Database»<br/><b>Database</b><br/>[SQLite]<br/><br/>Users, roles, airports,<br/>aircraft, flights, seats,<br/>bookings, payments and tickets.")]
+        db[("«Container: Database»<br/><b>Database</b><br/>[SQLite]<br/><br/>Users, roles, airports,<br/>aircraft, flights, seats,<br/>bookings, payments,<br/>tickets and notifications.")]
 
     end
 
