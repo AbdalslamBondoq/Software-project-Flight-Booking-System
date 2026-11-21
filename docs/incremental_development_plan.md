@@ -54,6 +54,7 @@ Each capability has two planned versions. The `-design` version defines the expe
 **Working acceptance criteria**
 
 - An authorized airline administrator can add, edit, and delete flights, airports, and aircraft, subject to referential integrity.
+- Adding a flight creates its seats based on the aircraft capacity, each with status `AVAILABLE`.
 - The system prevents deletion of an airport or aircraft referenced by an existing flight.
 - The backend rejects flight, airport, and aircraft management requests from users without the airline administrator role.
 
