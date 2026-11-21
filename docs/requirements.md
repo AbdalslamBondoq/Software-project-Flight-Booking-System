@@ -20,7 +20,7 @@ The system scope and users are described in [`project_description.md`](project_d
 | FR-12 | Cancel Booking | The customer can cancel their own confirmed booking before departure. The system marks the booking as CANCELLED and releases the seat. | Customer |
 | FR-13 | Refund | For a customer cancellation at least 14 days before departure, the system records a refund of 50% of the amount paid. For a cancellation less than 14 days before departure, the refund is zero. | System |
 | FR-14 | Confirmation | After confirming a booking, the system records a simulated confirmation notification that the customer can view. | System |
-| FR-15 | Manage Flights | The admin can add, edit, and delete flights. | Admin |
+| FR-15 | Manage Flights | The admin can add, edit, and delete flights. When a flight is added, the system creates its seats based on the aircraft capacity. | Admin |
 | FR-16 | Manage Airports and Aircraft | The admin can manage airport and aircraft information. | Admin |
 
 ## 2. Non-Functional Requirements
@@ -28,8 +28,8 @@ The system scope and users are described in [`project_description.md`](project_d
 | ID | Requirement | Description |
 |---|---|---|
 | NFR-01 | Password Hashing | Passwords must be stored using secure hashing, not as plain text. |
-| NFR-02 | Search Speed | Search results should appear within 3 seconds. |
-| NFR-03 | Responsive UI | The interface should work on desktop and mobile browsers. |
+| NFR-02 | Search Speed | Search results should appear within 3 seconds, measured from submitting the search until the results are displayed, with up to 1,000 flights in the database. |
+| NFR-03 | Responsive UI | All pages are usable at screen widths from 360 px (mobile) to 1920 px (desktop) without horizontal scrolling, and a customer can complete a booking on both a mobile and a desktop browser. |
 | NFR-04 | Admin-only Access | Only authorized administrators can access flight, airport, and aircraft management pages. |
 
 ## 3. Assumptions
