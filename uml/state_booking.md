@@ -20,15 +20,6 @@ stateDiagram-v2
     Cancelled --> [*]
     Expired --> [*]
     Completed --> [*]
-
-    note right of Pending
-        The seat is held for 10 minutes.
-    end note
-
-    note right of Confirmed
-        The system records a simulated
-        booking confirmation.
-    end note
 ```
 
 ## 3. Booking States
