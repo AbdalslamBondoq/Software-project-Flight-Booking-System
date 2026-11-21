@@ -198,23 +198,39 @@ classDiagram
 ## 4. Important Business Rules
 
 1. Customers can register their own accounts. Administrator accounts cannot be created through public registration.
+   
 2. The System Manager creates and configures administrator accounts.
+   
 3. A seat is temporarily held for 10 minutes after selection.
+   
 4. If payment succeeds while the hold is still active, the booking becomes CONFIRMED and the seat becomes BOOKED.
+   
 5. If payment fails or the 10-minute hold expires, the booking is cancelled or expired, and the seat is released.
+   
 6. An electronic ticket is issued only after successful payment.
+   
 7. Customers can cancel confirmed bookings before departure.
+   
 8. A 50% refund is provided when cancellation occurs at least 14 days before departure. No refund is provided when cancellation occurs less than 14 days before departure.
+   
 9. Payment and notification operations are simulated; no real payment gateway or email service is integrated.
+
 10. The system must prevent two customers from booking the same seat for the same flight.
+ 
 
 
 ## 5. Notes
 
 - The `Seat` status represents whether a seat is AVAILABLE, HELD, or BOOKED.
+  
 - The `holdExpiresAt` attribute records when a temporary seat hold expires.
+  
 - The `BookingStatus` enumeration represents the booking lifecycle.
+  
 - The `PaymentStatus` enumeration represents the result of a simulated payment transaction.
+  
 - The relationship between Booking and Ticket is optional because a ticket is generated only after successful payment.
+  
 - The relationship between Booking and Payment is optional while payment has not yet been initiated.
+  
 - The system must validate the seat hold before confirming a booking to prevent expired holds from being used.
