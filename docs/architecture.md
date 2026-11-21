@@ -16,9 +16,11 @@ The backend includes two internal modules for simulated payments and booking not
 | Payment Service (simulated) | Processes simulated payment requests, returns success or failure, and processes simulated refunds. |
 | Notification Service (simulated) | Records a booking confirmation that the customer can view after the booking is confirmed. |
 
-## Technology Stack (Proposed)
+## Technology Stack
 
-| Area | Proposed Technology |
+The team reviewed the alternatives and selected the following technologies.
+
+| Area | Technology |
 |------|---------------------|
 | Backend | Python with FastAPI |
 | Frontend | HTML, CSS, JavaScript |
