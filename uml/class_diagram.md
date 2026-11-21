@@ -1,5 +1,6 @@
 # Class Diagram - Flight Booking System
 
+
 ## 1. Overview
 
 This class diagram represents the main classes, attributes, methods, and relationships of the Flight Booking System.
@@ -9,6 +10,7 @@ The system supports customer registration, flight searching, seat selection, boo
 The system also includes a System Manager role responsible for creating and configuring administrator accounts.
 
 ## 2. Class Diagram
+
 
 ```mermaid
 classDiagram
@@ -172,6 +174,7 @@ classDiagram
     Payment --> PaymentStatus
 ```
 
+
 ## 3. Main Class Responsibilities
 
 | Class | Responsibility |
@@ -191,6 +194,7 @@ classDiagram
 | Notification | Stores the simulated booking confirmation that the customer can view (FR-14). |
 | NotificationService | Handles simulated booking confirmation notifications. |
 
+
 ## 4. Important Business Rules
 
 1. Customers can register their own accounts. Administrator accounts cannot be created through public registration.
@@ -203,6 +207,7 @@ classDiagram
 8. A 50% refund is provided when cancellation occurs at least 14 days before departure. No refund is provided when cancellation occurs less than 14 days before departure.
 9. Payment and notification operations are simulated; no real payment gateway or email service is integrated.
 10. The system must prevent two customers from booking the same seat for the same flight.
+
 
 ## 5. Notes
 
