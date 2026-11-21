@@ -1,3 +1,4 @@
+
 # Requirements - Flight Booking System (Group 17)
 
 The system scope and users are described in [`project_description.md`](project_description.md).
@@ -6,31 +7,31 @@ The system scope and users are described in [`project_description.md`](project_d
 
 | ID | Requirement | Description | Actor |
 |---|---|---|---|
-| FR-01 | Register | The customer can register a new account. | Customer |
-| FR-02 | Admin Account Creation | The System Manager creates and configures administrator accounts in advance. Public administrator registration is not allowed. | System Manager |
-| FR-03 | Login and Logout | Customers, administrators, and the System Manager can log in and log out using their accounts. | Customer, Admin, System Manager |
-| FR-04 | Search Flights | The customer can search for flights by origin, destination, and date. | Customer |
-| FR-05 | Filter Results | The customer can filter and sort search results by price and time. | Customer |
-| FR-06 | View Seats | The customer can view available seats for a flight. | Customer |
-| FR-07 | Book Seat | A logged-in customer can select an available seat on a flight and create a PENDING booking. | Customer |
-| FR-08 | Prevent Double Booking | When a pending booking is created, the system holds the seat for 10 minutes. Only one booking can hold or reserve the same seat on the same flight at a time. If the hold expires before confirmation, the system marks the pending booking as EXPIRED and releases the seat. | System |
-| FR-09 | Pay | The customer can make a simulated payment for a pending booking. If payment succeeds while the seat hold is active, the system marks the booking as CONFIRMED and the seat as BOOKED. If payment fails while the hold is active, the system marks the booking as CANCELLED and releases the seat. | Customer |
-| FR-10 | E-ticket | The system issues an e-ticket only after successful payment and booking confirmation. | System |
-| FR-11 | View Bookings | The customer can view their own bookings and the current status of each booking. | Customer |
-| FR-12 | Cancel Booking | The customer can cancel their own confirmed booking before departure. The system marks the booking as CANCELLED and releases the seat. | Customer |
-| FR-13 | Refund | For a customer cancellation at least 14 days before departure, the system records a refund of 50% of the amount paid. For a cancellation less than 14 days before departure, the refund is zero. | System |
-| FR-14 | Confirmation | After confirming a booking, the system records a simulated confirmation notification that the customer can view. | System |
-| FR-15 | Manage Flights | The admin can add, edit, and delete flights. When a flight is added, the system creates its seats based on the aircraft capacity. | Admin |
-| FR-16 | Manage Airports and Aircraft | The admin can manage airport and aircraft information. | Admin |
+| FR&#8209;01 | Register | The customer can register a new account. | Customer |
+| FR&#8209;02 | Admin Account Creation | The System Manager creates and configures administrator accounts in advance. Public administrator registration is not allowed. | System Manager |
+| FR&#8209;03 | Login and Logout | Customers, administrators, and the System Manager can log in and log out using their accounts. | Customer, Admin, System Manager |
+| FR&#8209;04 | Search Flights | The customer can search for flights by origin, destination, and date. | Customer |
+| FR&#8209;05 | Filter Results | The customer can filter and sort search results by price and time. | Customer |
+| FR&#8209;06 | View Seats | The customer can view available seats for a flight. | Customer |
+| FR&#8209;07 | Book Seat | A logged-in customer can select an available seat on a flight and create a PENDING booking. | Customer |
+| FR&#8209;08 | Prevent Double Booking | When a pending booking is created, the system holds the seat for 10 minutes. Only one booking can hold or reserve the same seat on the same flight at a time. If the hold expires before confirmation, the system marks the pending booking as EXPIRED and releases the seat. | System |
+| FR&#8209;09 | Pay | The customer can make a simulated payment for a pending booking. If payment succeeds while the seat hold is active, the system marks the booking as CONFIRMED and the seat as BOOKED. If payment fails while the hold is active, the system marks the booking as CANCELLED and releases the seat. | Customer |
+| FR&#8209;10 | E-ticket | The system issues an e-ticket only after successful payment and booking confirmation. | System |
+| FR&#8209;11 | View Bookings | The customer can view their own bookings and the current status of each booking. | Customer |
+| FR&#8209;12 | Cancel Booking | The customer can cancel their own confirmed booking before departure. The system marks the booking as CANCELLED and releases the seat. | Customer |
+| FR&#8209;13 | Refund | For a customer cancellation at least 14 days before departure, the system records a refund of 50% of the amount paid. For a cancellation less than 14 days before departure, the refund is zero. | System |
+| FR&#8209;14 | Confirmation | After confirming a booking, the system records a simulated confirmation notification that the customer can view. | System |
+| FR&#8209;15 | Manage Flights | The admin can add, edit, and delete flights. When a flight is added, the system creates its seats based on the aircraft capacity. | Admin |
+| FR&#8209;16 | Manage Airports and Aircraft | The admin can manage airport and aircraft information. | Admin |
 
 ## 2. Non-Functional Requirements
 
 | ID | Requirement | Description |
 |---|---|---|
-| NFR-01 | Password Hashing | Passwords must be stored using secure hashing, not as plain text. |
-| NFR-02 | Search Speed | Search results should appear within 3 seconds, measured from submitting the search until the results are displayed, with up to 1,000 flights in the database. |
-| NFR-03 | Responsive UI | All pages are usable at screen widths from 360 px (mobile) to 1920 px (desktop) without horizontal scrolling, and a customer can complete a booking on both a mobile and a desktop browser. |
-| NFR-04 | Admin-only Access | Only authorized administrators can access flight, airport, and aircraft management pages. |
+| NFR&#8209;01 | Password Hashing | Passwords must be stored using secure hashing, not as plain text. |
+| NFR&#8209;02 | Search Speed | Search results should appear within 3 seconds, measured from submitting the search until the results are displayed, with up to 1,000 flights in the database. |
+| NFR&#8209;03 | Responsive UI | All pages are usable at screen widths from 360 px (mobile) to 1920 px (desktop) without horizontal scrolling, and a customer can complete a booking on both a mobile and a desktop browser. |
+| NFR&#8209;04 | Admin-only Access | Only authorized administrators can access flight, airport, and aircraft management pages. |
 
 ## 3. Assumptions
 
