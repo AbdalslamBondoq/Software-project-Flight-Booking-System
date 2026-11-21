@@ -12,13 +12,15 @@ The backend includes two internal modules for simulated payments and booking not
 |-----------|----------------|
 | Web Application | Provides pages for registration, login, flight search, seat selection, payment, e-tickets, and My Bookings. Provides management screens according to the user's role. |
 | Backend API | Authenticates users, checks permissions, searches flights, and manages seat holds, bookings, cancellations, refunds, and ticket issuance. |
-| Database | Stores users, airports, aircraft, flights, seats, bookings, payments, and tickets. |
+| Database | Stores users, airports, aircraft, flights, seats, bookings, payments, tickets, and notifications. |
 | Payment Service (simulated) | Processes simulated payment requests, returns success or failure, and processes simulated refunds. |
 | Notification Service (simulated) | Records a booking confirmation that the customer can view after the booking is confirmed. |
 
-## Technology Stack (Proposed)
+## Technology Stack
 
-| Area | Proposed Technology |
+The team reviewed the alternatives and selected the following technologies.
+
+| Area | Technology |
 |------|---------------------|
 | Backend | Python with FastAPI |
 | Frontend | HTML, CSS, JavaScript |
@@ -78,4 +80,5 @@ A customer can cancel a confirmed booking before departure. The backend cancels 
 - [Booking Activity Diagram](../uml/activity_booking.md)
 - [Booking Sequence Diagram](../uml/sequence_booking.md)
 - [Booking State Diagram](../uml/state_booking.md)
+- [Seat State Diagram](../uml/state_seat.md)
 - [Entity Relationship Diagram](../uml/erd.md)
