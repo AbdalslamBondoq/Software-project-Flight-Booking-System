@@ -29,7 +29,7 @@ The system scope and users are described in [`project_description.md`](project_d
 |---|---|---|
 | NFR-01 | Password Hashing | Passwords must be stored using secure hashing, not as plain text. |
 | NFR-02 | Search Speed | Search results should appear within 3 seconds, measured from submitting the search until the results are displayed, with up to 1,000 flights in the database. |
-| NFR-03 | Responsive UI | The interface should work on desktop and mobile browsers. |
+| NFR-03 | Responsive UI | All pages are usable at screen widths from 360 px (mobile) to 1920 px (desktop) without horizontal scrolling, and a customer can complete a booking on both a mobile and a desktop browser. |
 | NFR-04 | Admin-only Access | Only authorized administrators can access flight, airport, and aircraft management pages. |
 
 ## 3. Assumptions
