@@ -37,7 +37,6 @@
 | [Booking Sequence Diagram](uml/sequence_booking.md) | Seat hold, simulated payment, confirmation, and hold expiry. |
 | [Booking Activity Diagram](uml/activity_booking.md) | Customer booking workflow and alternative payment outcomes. |
 | [Booking State Diagram](uml/state_booking.md) | Booking lifecycle: Pending, Confirmed, Cancelled, Expired, Completed. |
-| [Seat State Diagram](uml/state_seat.md) | Seat lifecycle: Available, Held, Booked, and how the 10-minute hold prevents double booking. |
 | [Entity Relationship Diagram](uml/erd.md) | Database tables, keys, and relationships. |
 
 The architecture is explained in [docs/architecture.md](docs/architecture.md).
