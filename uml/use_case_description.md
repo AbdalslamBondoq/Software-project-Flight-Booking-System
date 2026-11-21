@@ -224,7 +224,7 @@ The descriptions are based on the Use Case Diagram and the functional requiremen
 | Description | Allows authorized administrators to add, edit, and delete flight information. |
 | Preconditions | The administrator is logged in and authorized. |
 | Trigger | The administrator opens flight management. |
-| Main Flow | 1. The administrator opens the flight management page. 2. The system displays existing flights. 3. The administrator selects an operation. 4. The administrator enters or updates flight information. 5. The system validates the information. 6. The system saves the changes. |
+| Main Flow | 1. The administrator opens the flight management page. 2. The system displays existing flights. 3. The administrator selects an operation. 4. The administrator enters or updates flight information. 5. The system validates the information. 6. The system saves the changes. When a new flight is added, the system also creates its seats based on the aircraft capacity. |
 | Alternative Flow | If the information is invalid, the system displays validation errors. Unauthorized users are denied access. |
 | Postconditions | Flight information is updated successfully. |
 
