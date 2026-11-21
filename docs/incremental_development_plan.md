@@ -12,7 +12,7 @@ Each capability has two planned versions. The `-design` version defines the expe
 | v0.2.0 | Working | Administration of flights, airports, and aircraft | Functional code, AI-run tests, demo | `src/flights`; `tests/` (planned) |
 | v0.3.0-design | Design | Flight search, filtering, and sorting | Updated search use cases and search specification | FR-04, FR-05, NFR-02; [Use case diagram](../uml/use_case_diagram.md), [Use case descriptions](../uml/use_case_description.md) |
 | v0.3.0 | Working | Flight search, filtering, and sorting | Functional code, AI-run tests, demo | `src/search`; `tests/` (planned) |
-| v0.4.0-design | Design | Seat availability, pending bookings, and 10-minute holds | Updated booking sequence, booking and seat state diagrams, and ERD | FR-06, FR-07, FR-08; [Booking sequence](../uml/sequence_booking.md), [Booking states](../uml/state_booking.md), [Seat states](../uml/state_seat.md), [ERD](../uml/erd.md) |
+| v0.4.0-design | Design | Seat availability, pending bookings, and 10-minute holds | Updated booking sequence, state diagram, and ERD | FR-06, FR-07, FR-08; [Booking sequence](../uml/sequence_booking.md), [Booking states](../uml/state_booking.md), [ERD](../uml/erd.md) |
 | v0.4.0 | Working | Seat availability, pending bookings, and 10-minute holds | Functional code, AI-run tests, demo | `src/booking`; `tests/` (planned) |
 | v0.5.0-design | Design | Simulated payment, booking confirmation, and e-ticket issuance | Updated booking sequence and activity diagram | FR-09, FR-10; [Booking sequence](../uml/sequence_booking.md), [Booking activity](../uml/activity_booking.md) |
 | v0.5.0 | Working | Simulated payment, booking confirmation, and e-ticket issuance | Functional code, AI-run tests, demo | `src/payment`; `tests/` (planned) |
@@ -84,7 +84,7 @@ Each capability has two planned versions. The `-design` version defines the expe
 **Design acceptance criteria**
 
 - The booking sequence shows that checking availability, creating a pending booking, and holding the seat occur in one database transaction.
-- The booking and seat state diagrams distinguish the `PENDING` booking from the `HELD` seat and show how an expired hold releases the seat.
+- The state diagram distinguishes the `PENDING` booking from the `HELD` seat and shows how an expired hold releases the seat.
 
 **Working acceptance criteria**
 

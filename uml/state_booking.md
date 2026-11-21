@@ -2,62 +2,71 @@
 
 ## 1. Overview
 
-This state diagram describes the lifecycle of a booking in the Flight Booking System. A booking starts in the Pending state when the customer reserves an available seat. Its next state depends on the payment result, the 10-minute seat hold, customer cancellation, or flight departure.
+This state diagram shows how a booking changes its state in response to events during its lifetime, from the moment a customer selects a seat until the booking ends. It follows the state diagram notation in slide SD06: an initial state, states with their `do:` activity, transitions labelled `event [guard] / action`, and a final state. The seat status that goes with each booking state is listed in the States Description table.
 
 ## 2. State Diagram
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Pending : Select available seat / create booking and hold seat
+    [*] --> Pending : Select seat [seat available] / create booking and hold seat
 
-    Pending --> Confirmed : Payment succeeds [hold active] / book seat and issue e-ticket
-    Pending --> Cancelled : Payment fails [hold active] / release seat
-    Pending --> Expired : Hold expires / release seat
+    state "Pending" as Pending
+    state "Confirmed" as Confirmed
+    state "Cancelled" as Cancelled
+    state "Expired" as Expired
+    state "Completed" as Completed
 
-    Confirmed --> Cancelled : Customer cancels [before departure] / calculate refund and release seat
-    Confirmed --> Completed : Flight departs
+    Pending : do: hold seat for 10 minutes
+    Confirmed : do: display e-ticket and confirmation
+    Cancelled : do: display cancellation and refund
+    Expired : do: display "Booking expired"
+    Completed : do: show booking as a past trip
+
+    Pending --> Confirmed : Payment succeeded [hold active] / book seat and issue e-ticket
+    Pending --> Cancelled : Payment failed [hold active] / release seat
+    Pending --> Expired : Hold timeout / release seat
+
+    Confirmed --> Cancelled : Cancel [before departure] / calculate refund and release seat
+    Confirmed --> Completed : Flight departed
 
     Cancelled --> [*]
     Expired --> [*]
     Completed --> [*]
 ```
 
-## 3. Booking States
+## 3. States Description
 
-| State | Meaning |
+| State | Description |
 |---|---|
-| Pending | The customer has a booking and the seat is temporarily held while awaiting payment. |
-| Confirmed | Payment succeeded while the hold was active. The seat is booked and an e-ticket is issued. |
-| Cancelled | Payment failed during an active hold, or the customer cancelled a confirmed booking before departure. |
-| Expired | The 10-minute hold ended before the booking was confirmed. The seat is available again. |
-| Completed | The flight departed with the booking confirmed. The booking lifecycle is complete. |
+| Pending | The customer has selected a seat and a booking exists. The seat is `HELD` for this booking for 10 minutes, so no other customer can select it. The system waits for the simulated payment. |
+| Confirmed | The payment succeeded while the hold was active. The seat is `BOOKED`. The customer can view the e-ticket and the simulated booking confirmation. |
+| Cancelled | The payment failed while the hold was active, or the customer cancelled the confirmed booking before departure. The seat is `AVAILABLE` again. A refund is recorded when the cancellation is eligible. |
+| Expired | The 10-minute hold ended before payment succeeded. The seat is `AVAILABLE` again. A late payment cannot confirm this booking. |
+| Completed | The flight departed while the booking was confirmed. The seat stays `BOOKED` and the booking is kept as a past trip. |
 
-## 4. State Transitions
+## 4. Stimulus Description
 
-| Current state | Event or condition | Next state | System action |
-|---|---|---|---|
-| Initial | The customer reserves an available seat. | Pending | Create the booking, hold the seat, and record the hold expiration time in one transaction. |
-| Pending | Payment succeeds and the booking still owns an active hold. | Confirmed | Confirm the booking, mark the seat as booked, issue an e-ticket, and record a simulated confirmation. |
-| Pending | Payment fails while the hold is active. | Cancelled | Cancel the pending booking, release its seat, and display the payment failure message. |
-| Pending | The 10-minute hold expires. | Expired | Expire the pending booking and release its seat. |
-| Confirmed | The customer cancels their booking before departure. | Cancelled | Calculate the applicable refund, cancel the booking, and release the seat. |
-| Confirmed | The flight departs. | Completed | Mark the booking as completed. |
+| Stimulus | Description |
+|---|---|
+| Select seat | A logged-in customer selects a seat on a flight and requests a booking (FR-07). |
+| Payment succeeded | The simulated payment for a pending booking returns success (FR-09). |
+| Payment failed | The simulated payment for a pending booking returns failure (FR-09). |
+| Hold timeout | 10 minutes have passed since the seat was held and the booking is still pending (FR-08). |
+| Cancel | The customer cancels their own confirmed booking (FR-12). |
+| Flight departed | The departure time of the flight has passed. |
 
-## 5. Business Rules
+## 5. Guard Conditions
 
-1. A booking starts in the Pending state when a customer reserves an available seat.
-2. A selected seat is held for 10 minutes. If the hold expires before the booking is confirmed, the booking moves from Pending to Expired and the seat becomes available again.
-3. Before confirming payment, the backend checks that the booking is still Pending and still owns an active hold on the seat. An expired booking cannot be confirmed.
-4. If payment fails while the hold is active, the booking moves from Pending to Cancelled and the system releases the seat.
-5. When the booking becomes Confirmed, the system marks the seat as booked, issues an e-ticket, and records a simulated booking confirmation.
-6. A customer can cancel their own confirmed booking before departure. Cancellation at least 14 days before departure gives a 50% refund. Cancellation less than 14 days before departure gives no refund.
-7. When the flight departs, a confirmed booking moves to Completed.
-8. Cancelled, Expired, and Completed are final booking states.
+| Guard | Meaning |
+|---|---|
+| [seat available] | The seat is not held or booked by another booking. The check, the new booking and the seat hold happen in one database transaction, so only one of two simultaneous requests for the same seat succeeds (FR-08). |
+| [hold active] | The booking is still pending and its 10-minute hold has not expired. |
+| [before departure] | The flight has not departed yet. |
 
 ## 6. Related Documents
 
 - [Requirements](../docs/requirements.md)
-- [Booking Activity Diagram](activity_booking.md)
+- [Class Diagram](class_diagram.md) (`Booking`, `BookingStatus`, `Seat`, `SeatStatus`)
 - [Booking Sequence Diagram](sequence_booking.md)
+- [Booking Activity Diagram](activity_booking.md)
 - [Use Case Descriptions](use_case_description.md)
-- [Entity Relationship Diagram](erd.md)

@@ -80,5 +80,4 @@ A customer can cancel a confirmed booking before departure. The backend cancels 
 - [Booking Activity Diagram](../uml/activity_booking.md)
 - [Booking Sequence Diagram](../uml/sequence_booking.md)
 - [Booking State Diagram](../uml/state_booking.md)
-- [Seat State Diagram](../uml/state_seat.md)
 - [Entity Relationship Diagram](../uml/erd.md)
