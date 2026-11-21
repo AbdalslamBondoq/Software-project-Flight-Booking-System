@@ -71,8 +71,8 @@ Details are in [docs/incremental_development_plan.md](docs/incremental_developme
 
 | Team member | Main responsibility | Commits |
 |---|---|---|
-| Abdullah Jaber | Project description, requirement IDs, component and deployment diagrams, traceability matrix, use case descriptions | _update before each release_ |
-| Ahmad Ababneh | State, class, ER, activity, and sequence diagrams; design consistency reviews | _update before each release_ |
-| Abdusalam Bondoq | Repository setup, initial requirements, C4 diagrams, incremental plan | _update before each release_ |
+| Abdullah Jaber | Project description, requirement IDs, component and deployment diagrams, traceability matrix, use case descriptions | 70 |
+| Ahmad Ababneh | State, class, ER, activity, and sequence diagrams; design consistency reviews | 55 |
+| Abdusalam Bondoq | Repository setup, initial requirements, C4 diagrams, incremental plan | 69 |
 
-Commit counts are taken from `git shortlog -sn --all` and updated at each tagged release. Commit count alone does not measure the quality of a contribution.
+Commit counts are the commits on the `main` branch, including merge commits, as of 21 November 2026 (after PR #55). They are taken from `git shortlog -sne main`, with each member's GitHub account and local Git names added together, and are updated at each tagged release. Commit count alone does not measure the quality of a contribution.
