@@ -8,7 +8,7 @@ The system scope and users are described in [`project_description.md`](project_d
 |---|---|---|---|
 | FR-01 | Register | The customer can register a new account. | Customer |
 | FR-02 | Admin Account Creation | The System Manager creates and configures administrator accounts in advance. Public administrator registration is not allowed. | System Manager |
-| FR-03 | Login and Logout | Customers and administrators can log in and log out using their accounts. | Customer, Admin |
+| FR-03 | Login and Logout | Customers, administrators, and the System Manager can log in and log out using their accounts. | Customer, Admin, System Manager |
 | FR-04 | Search Flights | The customer can search for flights by origin, destination, and date. | Customer |
 | FR-05 | Filter Results | The customer can filter and sort search results by price and time. | Customer |
 | FR-06 | View Seats | The customer can view available seats for a flight. | Customer |
@@ -39,6 +39,7 @@ The system scope and users are described in [`project_description.md`](project_d
 - Each flight has defined seats available for reservation.
 - Customer accounts are created through the registration process.
 - Administrator accounts are created and configured in advance by the System Manager. Public administrator registration is not allowed.
+- The System Manager account is created when the system is set up. It cannot be created through public registration.
 - Payment is simulated, with no real payment gateway.
 - Notifications are simulated and may be printed or saved, not sent as real emails.
 - A booking cancelled 14 or more days before departure receives a 50% refund.

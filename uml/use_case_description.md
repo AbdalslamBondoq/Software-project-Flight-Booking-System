@@ -36,8 +36,8 @@ The descriptions are based on the Use Case Diagram and the functional requiremen
 |---|---|
 | Use Case ID | UC-02 |
 | Use Case Name | Log In / Log Out |
-| Primary Actor | Customer, Airline Administrator |
-| Description | Allows registered customers and authorized administrators to access or leave their accounts. |
+| Primary Actor | Customer, Airline Administrator, System Manager |
+| Description | Allows registered customers, authorized administrators, and the System Manager to access or leave their accounts. |
 | Preconditions | The user has an existing account. |
 | Trigger | The user selects the login or logout option. |
 | Main Flow | 1. The user opens the login page. 2. The user enters their email and password. 3. The system validates the credentials. 4. The system identifies the user's role. 5. The system grants access to the appropriate pages. 6. When logging out, the user selects the logout option. 7. The system ends the session. |
