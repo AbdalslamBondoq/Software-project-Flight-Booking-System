@@ -39,6 +39,7 @@ The system scope and users are described in [`project_description.md`](project_d
 - Each flight has defined seats available for reservation.
 - Customer accounts are created through the registration process.
 - Administrator accounts are created and configured in advance by the System Manager. Public administrator registration is not allowed.
+- The System Manager account is created when the system is set up. It cannot be created through public registration.
 - Payment is simulated, with no real payment gateway.
 - Notifications are simulated and may be printed or saved, not sent as real emails.
 - A booking cancelled 14 or more days before departure receives a 50% refund.
