@@ -11,3 +11,4 @@ The summary of every task is in [`docs/ai_development_log.md`](../docs/ai_develo
 | [v0.1.0-uml-diagrams.md](v0.1.0-uml-diagrams.md) | v0.1.0-design | UML diagrams and ERD |
 | [v0.1.0-design-review.md](v0.1.0-design-review.md) | v0.1.0-design | Review of the design against the instructions and slides |
 | [v0.1.0-design-completion.md](v0.1.0-design-completion.md) | v0.1.0-design | Completing the design before the first oral examination |
+| [v0.1.0-state-diagram-revision.md](v0.1.0-state-diagram-revision.md) | v0.1.0-design | Revising the state diagram to follow slide SD06 |
