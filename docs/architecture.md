@@ -12,7 +12,7 @@ The backend includes two internal modules for simulated payments and booking not
 |-----------|----------------|
 | Web Application | Provides pages for registration, login, flight search, seat selection, payment, e-tickets, and My Bookings. Provides management screens according to the user's role. |
 | Backend API | Authenticates users, checks permissions, searches flights, and manages seat holds, bookings, cancellations, refunds, and ticket issuance. |
-| Database | Stores users, airports, aircraft, flights, seats, bookings, payments, and tickets. |
+| Database | Stores users, airports, aircraft, flights, seats, bookings, payments, tickets, and notifications. |
 | Payment Service (simulated) | Processes simulated payment requests, returns success or failure, and processes simulated refunds. |
 | Notification Service (simulated) | Records a booking confirmation that the customer can view after the booking is confirmed. |
 
