@@ -75,7 +75,8 @@ flowchart LR
     Admin --- UC16
     Admin --- UC17
 
-    %% SYSTEM MANAGER ASSOCIATION
+    %% SYSTEM MANAGER ASSOCIATIONS
+    Manager --- UC02
     Manager --- UC18
 
     %% INCLUDE RELATIONSHIPS
@@ -109,7 +110,7 @@ flowchart LR
 | Use Case | Description |
 |---|---|
 | UC-01 Register Account | Allows customers to create new accounts. |
-| UC-02 Log In / Log Out | Allows customers and administrators to access and leave their accounts. |
+| UC-02 Log In / Log Out | Allows customers, administrators, and the System Manager to access and leave their accounts. |
 | UC-18 Create Administrator Accounts | Allows the System Manager to create and configure administrator accounts in advance. |
 | UC-03 Search Flights | Searches for flights by origin, destination, and date. |
 | UC-04 Filter and Sort Results | Allows customers to filter and sort search results by price and time. |
