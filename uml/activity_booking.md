@@ -1,10 +1,14 @@
 # Activity Diagram - Flight Booking System
 
+
 ## 1. Overview
 
 This document describes the customer flight booking process, including login, flight search, seat selection, the 10-minute seat hold, simulated payment, booking confirmation, and e-ticket generation.
 
 The diagram uses two swimlanes: **Customer** and **Flight Booking System**. Simulated payment is processed by the payment module inside the Flight Booking System backend. The solid circle is the initial node, the circle with a thick border is the final node, and conditions on decision branches are written as guards in square brackets.
+
+
+
 
 ## 2. Activity Diagram
 
@@ -73,6 +77,9 @@ flowchart LR
     style End fill:#000,stroke:#000,stroke-width:4px
 ```
 
+
+
+
 ## 3. Main Activity Descriptions
 
 | Activity | Description |
@@ -93,12 +100,19 @@ flowchart LR
 ## 4. Business Rules
 
 1. Customers must log in before booking a flight.
+
 2. Only an available seat can be reserved. The availability check, pending booking creation, and seat hold must occur in one database transaction to prevent double booking.
+
 3. The seat hold lasts 10 minutes from the creation of the pending booking.
+
 4. When the hold expires, the system marks the pending booking as `EXPIRED` and releases the seat.
+   
 5. If payment fails while the hold is active, the system marks the pending booking as `CANCELLED`, releases the seat, and displays a payment failure message.
+    
 6. The system confirms a booking only if payment succeeds and the booking still owns an active hold on the seat.
+    
 7. The system generates an e-ticket only after confirming the booking.
+    
 8. Payment processing and booking notifications are simulated.
 
 ## 5. Related Documents
